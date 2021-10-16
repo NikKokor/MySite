@@ -53,7 +53,7 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/{id}", name="user_get", methods={"GET"})
+     * @Route("/get/{id}", name="user_get", methods={"GET"})
      */
     public function getUserByID(UserRepository $userRepository, $id): JsonResponse
     {
