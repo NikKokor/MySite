@@ -1,5 +1,6 @@
 <?php
 namespace App\Entity;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -72,10 +73,10 @@ class Logbook {
     }
 
     /**
-     * @param \DateTime $date_take
+     * @param ?DateTime $date_take
      * @return Logbook
      */
-    public function setDateTake(\DateTime $date_take): self
+    public function setDateTake(?DateTime $date_take): ?DateTime
     {
         $this->date_take = $date_take;
         return $this;
@@ -87,10 +88,10 @@ class Logbook {
     }
 
     /**
-     * @param \DateTime $date_return
+     * @param ?DateTime $date_return
      * @return Logbook
      */
-    public function setDateReturn(\DateTime $date_return): self
+    public function setDateReturn(?DateTime $date_return): ?DateTime
     {
         $this->date_return = $date_return;
         return $this;
