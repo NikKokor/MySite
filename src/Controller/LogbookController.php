@@ -37,7 +37,6 @@ class LogbookController extends ApiController
             $record->setBook($request->get('book_id'));
             $record->setUser($request->get('user_id'));
             $record->setDateTake(new DateTime());
-            $record->setDateReturn(new DateTime('0000-00-00 00:00:00'));
 
             $entityManager->persist($record);
             $entityManager->flush();
@@ -54,49 +53,6 @@ class LogbookController extends ApiController
                 'errors' => "Data no valid",
             ];
             return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
-        }
-    }
-
-    /**
-     * @Route("/return", name="return_book", methods={"PUT"})
-     */
-    public function returnBook(Request $request, LogbookRepository $logbookRepository) : JsonResponse
-    {
-        try {
-            $request = $this->transformJsonBody($request);
-
-            $user_id = $request->get('user_id');
-            $book_id = $request->get('book_id');
-
-            $record = $logbookRepository->findOneBy([
-                "user_id" => $user_id,
-                "book_id" => $book_id
-            ]);
-            $entityManager = $this->getDoctrine()->getManager();
-
-            if (!$record) {
-                $data = [
-                    'status' => Response::HTTP_NOT_FOUND,
-                    'errors' => "Record not found",
-                ];
-                return $this->response($data, [Response::HTTP_NOT_FOUND]);
-            }
-
-            $record->setDateReturn(new \DateTime());
-
-            $entityManager->flush();
-            $data = [
-                'status' => Response::HTTP_OK,
-                'errors' => "Book returned successfully",
-            ];
-            return $this->response($data,[]);
-        }
-        catch (\Exception $e) {
-            $data = [
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => "Data no valid",
-            ];
-            return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
         }
     }
 
