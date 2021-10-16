@@ -68,18 +68,13 @@ class Logbook {
     }
 
     /**
-     * @param DateTime $date_take
+     * @param \DateTime $date_take
      * @return Logbook
      */
-    public function setDateTake(DateTime $date_take): self
+    public function setDateTake(\DateTime $date_take): self
     {
         $this->date_take = $date_take;
         return $this;
-    }
-
-    public function getDateReturn(): string
-    {
-        return $this->date_return->format('Y\-m\-d h:i:s');
     }
 }
 
