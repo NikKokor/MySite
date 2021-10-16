@@ -76,6 +76,33 @@ class UserController extends ApiController
     }
 
     /**
+     * @Route("/get_all", name="user_get_all", methods={"GET"})
+     */
+    public function getUsers(UserRepository $userRepository): JsonResponse
+    {
+        $users = $userRepository->findAll();
+
+        $arrayUsers = [];
+        foreach ($users as $user){
+            $obj = [
+                "id" => $user->getId(),
+                "login" => $user->getLogin()
+            ];
+            $arrayUsers[] = $obj;
+        }
+
+        if (!$arrayUsers) {
+            $data = [
+                'status' => Response::HTTP_NOT_FOUND,
+                'errors' => "Users not found",
+            ];
+            return $this->response($data, [Response::HTTP_NOT_FOUND]);
+        }
+
+        return $this->response($arrayUsers);
+    }
+
+    /**
      * @Route("/{id}", name="user_put", methods={"PUT"})
      */
     public function updateUser(Request $request, UserRepository $userRepository, $id): JsonResponse
@@ -101,7 +128,7 @@ class UserController extends ApiController
                 $user->setLogin($login);
             }
             if (!empty($password)) {
-                $password->setLogin($password);
+                $password->setPassword($password);
             }
 
             $entityManager->flush();
