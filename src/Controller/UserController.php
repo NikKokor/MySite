@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\users;
-use App\Entity\books;
-use App\Entity\logbooks;
+use App\Entity\Users;
+use App\Entity\Books;
+use App\Entity\Logbooks;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use MongoDB\Driver\Exception\Exception;
