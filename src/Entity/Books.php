@@ -61,9 +61,9 @@ class Books {
         return $this;
     }
 
-    public function getDate(): ?\DateTime
+    public function getDate(): string
     {
-        return $this->date;
+        return $this->date->format('Y\-m\-d h:i:s');
     }
 
     /**

@@ -33,7 +33,7 @@ class BookController extends ApiController
             $book = new Books();
             $book->setName($request->get('name'));
             $book->setAuthor($request->get('author'));
-            $book->setDate($request->get('date'));
+            $book->setDate(new \DateTime());
 
             $entityManager->persist($book);
             $entityManager->flush();
