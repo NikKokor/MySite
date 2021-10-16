@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Entity\Books;
-use App\Entity\Logbooks;
+use App\Entity\Logbook;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use MongoDB\Driver\Exception\Exception;
