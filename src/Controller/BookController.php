@@ -33,7 +33,7 @@ class BookController extends ApiController
             $book = new Books();
             $book->setName($request->get('name'));
             $book->setAuthor($request->get('author'));
-            $book->setDate(new \DateTime());
+            $book->setYear($request->get('year'));
 
             $entityManager->persist($book);
             $entityManager->flush();
@@ -72,7 +72,7 @@ class BookController extends ApiController
             'id' => $book->getId(),
             'name' => $book->getName(),
             'author' => $book->getAuthor(),
-            'date' => $book->getDate()
+            'year' => $book->getYear()
         );
 
         return $this->response($bookData,[]);
@@ -91,7 +91,7 @@ class BookController extends ApiController
                 'id' => $book->getId(),
                 'name' => $book->getName(),
                 'author' => $book->getAuthor(),
-                'date' => $book->getDate()
+                'year' => $book->getYear()
             ];
             $arrayBooks[] = $obj;
         }

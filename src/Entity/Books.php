@@ -28,9 +28,9 @@ class Books {
     private $author;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string")
      */
-    private $date;
+    private $year;
 
     public function getId() : ?int
     {
@@ -61,18 +61,14 @@ class Books {
         return $this;
     }
 
-    public function getDate(): string
+    public function getYear(): string
     {
-        return $this->date->format('Y\-m\-d h:i:s');
+        return $this->year->format('Y\-m\-d h:i:s');
     }
 
-    /**
-     * @param \DateTime $date
-     * @return Books
-     */
-    public function setDate(\DateTime $date): self
+    public function setYear(\DateTime $year): self
     {
-        $this->date = $date;
+        $this->year = $year;
         return $this;
     }
 }
