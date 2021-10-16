@@ -99,7 +99,7 @@ class UserController extends ApiController
             return $this->response($data, [Response::HTTP_NOT_FOUND]);
         }
 
-        return $this->response($arrayUsers);
+        return $this->response($arrayUsers, []);
     }
 
     /**
