@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class UserController
+ * Class BookController
  * @package App\Controller
  * @Route("/book", name="book_api")
  */
@@ -63,7 +63,7 @@ class BookController extends ApiController
         if (!$book) {
             $data = [
                 'status' => Response::HTTP_NOT_FOUND,
-                'errors' => "User not found",
+                'errors' => "Book not found",
             ];
             return $this->response($data, [Response::HTTP_NOT_FOUND]);
         }
@@ -110,7 +110,7 @@ class BookController extends ApiController
     /**
      * @Route("/{id}", name="book_delete", methods={"DELETE"})
      */
-    public function deleteUser(BookRepository $bookRepository, $id): JsonResponse
+    public function deleteBook(BookRepository $bookRepository, $id): JsonResponse
     {
         $book = $bookRepository->find($id);
 
