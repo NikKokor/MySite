@@ -36,7 +36,7 @@ class LogbookController extends ApiController
             $record->setBook($request->get('book_id'));
             $record->setUser($request->get('user_id'));
             $record->setDateTake(new \DateTime());
-            $record->setDateReturn(null);
+            $record->setDateReturn(new \DateTime(null));
 
             $entityManager->persist($record);
             $entityManager->flush();

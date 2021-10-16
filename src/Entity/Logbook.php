@@ -87,10 +87,10 @@ class Logbook {
     }
 
     /**
-     * @param ?\DateTime $date_return
+     * @param \DateTime $date_return
      * @return Logbook
      */
-    public function setDateReturn(?\DateTime $date_return): self
+    public function setDateReturn(\DateTime $date_return): self
     {
         $this->date_return = $date_return;
         return $this;
