@@ -37,7 +37,6 @@ class LogbookController extends ApiController
             $record->setBook($request->get('book_id'));
             $record->setUser($request->get('user_id'));
             $record->setDateTake(new DateTime());
-            $record->setDateReturn(new DateTime());
 
             $entityManager->persist($record);
             $entityManager->flush();
@@ -90,8 +89,7 @@ class LogbookController extends ApiController
                     'author' => $book->getAuthor(),
                     'year' => $book->getYear()
                 ],
-                'date_take' => $record->getDateTake(),
-                'date_return' => $record->getDateReturn()
+                'date_take' => $record->getDateTake()
             );
             $arrayRecords[] = $recordData;
         }
@@ -131,8 +129,7 @@ class LogbookController extends ApiController
                     'author' => $book->getAuthor(),
                     'year' => $book->getYear()
                 ],
-                'date_take' => $record->getDateTake(),
-                'date_return' => $record->getDateReturn()
+                'date_take' => $record->getDateTake()
             );
             $arrayRecords[] = $recordData;
         }
