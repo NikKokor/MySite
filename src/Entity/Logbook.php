@@ -66,7 +66,7 @@ class Logbook {
         return $this;
     }
 
-    public function getDateTake(): ?\DateTime
+    public function getDateTake(): string
     {
         return $this->date_take->format('Y\-m\-d h:i:s');
     }
@@ -81,7 +81,7 @@ class Logbook {
         return $this;
     }
 
-    public function getDateReturn(): ?\DateTime
+    public function getDateReturn(): string
     {
         return $this->date_return->format('Y\-m\-d h:i:s');
     }
