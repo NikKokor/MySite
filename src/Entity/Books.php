@@ -63,12 +63,13 @@ class Books {
 
     public function getYear(): string
     {
-        return $this->year->format('Y\-m\-d h:i:s');
+        return $this->year;
     }
 
-    public function setYear(\DateTime $year): self
+    public function setYear(string $year): self
     {
         $this->year = $year;
+
         return $this;
     }
 }
