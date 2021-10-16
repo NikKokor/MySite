@@ -8,6 +8,7 @@ use App\Entity\Logbook;
 use App\Repository\LogbookRepository;
 use App\Repository\BookRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use MongoDB\Driver\Exception\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,8 +36,8 @@ class LogbookController extends ApiController
             $record = new Logbook();
             $record->setBook($request->get('book_id'));
             $record->setUser($request->get('user_id'));
-            $record->setDateTake(new \DateTime());
-            $record->setDateReturn(null);
+            $record->setDateTake(new DateTime());
+            $record->setDateReturn(DateTime::createFromFormat('Y-m-d','0000-00-00'));
 
             $entityManager->persist($record);
             $entityManager->flush();
