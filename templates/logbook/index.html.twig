@@ -22,7 +22,6 @@
             };
             return JSON.stringify(body);
         }
-
     </script>
 {% endblock %}
 
@@ -58,7 +57,7 @@
                 <td></td>
                 <td>{{ logbook.getDateReturn() }}</td>
                 <td></td>
-                <td>
+                <td onclick="putReturn()">
                     <a onclick="put({{ logbook.getUser() }}, {{ logbook.getBook() }});">Return</a>
                 </td>
             </tr>
