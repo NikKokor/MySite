@@ -35,7 +35,7 @@
                 <td>{{ logbook.getDateReturn() }}</td>
                 <td></td>
                 <td>
-                    <a>Return</a>
+                    <a href="{{ path('return_book', {'user_id': logbook.getUser(), 'book_id': logbook.getBook()}) }}">Return</a>
                 </td>
             </tr>
         {% else %}
