@@ -29,9 +29,14 @@ class Logbook {
     private $book_id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_take;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_return;
 
     public function getId() : ?int
     {
@@ -80,6 +85,16 @@ class Logbook {
     public function getDateReturn(): string
     {
         return $this->date_return->format('Y\-m\-d h:i:s');
+    }
+
+    /**
+     * @param DateTime $date_return
+     * @return Logbook
+     */
+    public function setDateReturn(DateTime $date_return): self
+    {
+        $this->date_take = $date_return;
+        return $this;
     }
 }
 
