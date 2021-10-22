@@ -72,7 +72,7 @@ class Logbook
 
     public function getDateTake(): string
     {
-        return $this->date_take->format('Y\-m\-d h:i:s');
+        return $this->date_take->format('Y\-m\-d H:i:s');
     }
 
     /**
@@ -90,7 +90,7 @@ class Logbook
         if ($this->date_return == null)
             return "not returned";
         else
-            return $this->date_return->format('Y\-m\-d h:i:s');
+            return $this->date_return->format('Y\-m\-d H:i:s');
     }
 
     /**
