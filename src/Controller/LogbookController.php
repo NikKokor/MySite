@@ -183,7 +183,7 @@ class LogbookController extends ApiController
     }
 
     /**
-     * @Route("/return/{user_id?}/{book_id?}", name="return_book", methods={"PUT"})
+     * @Route("/return/{user_id?}/{book_id?}", name="return_book", methods={"PUT", "GET"})
      */
     public function returnBook(Request $request, LogbookRepository $logbookRepository, $user_id, $book_id) : JsonResponse
     {
