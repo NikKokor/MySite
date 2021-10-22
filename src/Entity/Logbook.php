@@ -74,12 +74,12 @@ class Logbook {
 
     /**
      * @param DateTime $date_take
-     * @return Logbook
+     * @return DateTime
      */
-    public function setDateTake(DateTime $date_take): self
+    public function setDateTake(DateTime $date_take): DateTime
     {
         $this->date_take = $date_take;
-        return $this;
+        return $this->date_take;
     }
 
     public function getDateReturn(): string
@@ -89,12 +89,12 @@ class Logbook {
 
     /**
      * @param DateTime $date_return
-     * @return Logbook
+     * @return DateTime
      */
-    public function setDateReturn(DateTime $date_return): self
+    public function setDateReturn(DateTime $date_return): DateTime
     {
-        $this->date_take = $date_return;
-        return $this;
+        $this->date_return = $date_return;
+        return $this->date_return;
     }
 }
 
