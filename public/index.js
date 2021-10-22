@@ -1,7 +1,9 @@
-//import axiosa from "../node_modules/";
+//import axios from "../node_modules/";
+
+console.log("here");
 
 (function putReturn(data = {}) {
-    return axiosa({
+    return axios({
         method: 'POST',
         url: "http://195.140.146.82/logbook/return",
         headers: "'Content-Type': 'application/json'",
@@ -10,7 +12,7 @@
 })('putReturn')
 
 function putReturn(data = {}) {
-    return axiosa({
+    return axios({
         method: 'POST',
         url: "http://195.140.146.82/logbook/return",
         headers: "'Content-Type': 'application/json'",
