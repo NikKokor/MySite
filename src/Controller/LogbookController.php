@@ -209,9 +209,7 @@ class LogbookController extends ApiController
                 'status' => Response::HTTP_OK,
                 'errors' => "Book returned successfully",
             ];
-            return $this->render('logbook/index.html.twig', [
-                'logbooks' => $logbookRepository->findAll(),
-            ]);
+            return $this->response($data, []);
         }
         else {
             try {
