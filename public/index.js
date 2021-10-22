@@ -1,13 +1,4 @@
-//import axios from "../node_modules/";
-
-(function putReturn(data = {}) {
-    return axios({
-        method: 'POST',
-        url: "http://195.140.146.82/logbook/return",
-        headers: "'Content-Type': 'application/json'",
-        data: data
-    });
-})('putReturn')
+import axios from "../node_modules/axios/index.js";
 
 function putReturn(data = {}) {
     return axios({
