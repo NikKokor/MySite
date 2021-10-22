@@ -11,6 +11,14 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
+    public function __construct(string $environment, bool $debug)
+    {
+        // часовой пояс по умолчанию
+        date_default_timezone_set('Asia/Vladivostok');
+
+        parent::__construct($environment, $debug);
+    }
+
     protected function configureContainer(ContainerConfigurator $container): void
     {
         $container->import('../config/{packages}/*.yaml');
