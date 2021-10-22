@@ -3,21 +3,29 @@
 {% block title %}Logbooks{% endblock %}
 
 {% block body %}
+    <script>
+        import {putReturn} from "./index";
+        let body = {
+            user_id: {{ logbook.getUser() }},
+            book_id: {{ logbook.getBook() }}
+        };
+        let json = JSON.stringify(body);
+    </script>
     <h1>Logbooks</h1>
 
     <table class="table">
         <thead>
         <tr>
             <th>Id</th>
-            <td>      </td>
+            <td></td>
             <th>User_id</th>
-            <td>      </td>
+            <td></td>
             <th>Book_id</th>
-            <td>      </td>
+            <td></td>
             <th>Date take</th>
-            <td>      </td>
+            <td></td>
             <th>Date return</th>
-            <td>      </td>
+            <td></td>
             <th>actions</th>
         </tr>
         </thead>
@@ -25,15 +33,18 @@
         {% for logbook in logbooks %}
             <tr>
                 <td>{{ logbook.getId() }}</td>
-                <td>      </td>
+                <td></td>
                 <td>{{ logbook.getUser() }}</td>
-                <td>      </td>
+                <td></td>
                 <td>{{ logbook.getBook() }}</td>
-                <td>      </td>
+                <td></td>
                 <td>{{ logbook.getDateTake() }}</td>
-                <td>      </td>
+                <td></td>
                 <td>{{ logbook.getDateReturn() }}</td>
-                <td>      </td>
+                <td></td>
+                <td>
+                    <a onclick="putReturn(json)">Return</a>
+                </td>
             </tr>
         {% else %}
             <tr>
