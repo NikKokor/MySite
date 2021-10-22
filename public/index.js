@@ -1,5 +1,4 @@
-import axios from "axios";
-const axios = require('axios');
+import axios from "/axios";
 
 (function putReturn(data = {}) {
     return axios({
