@@ -3,8 +3,6 @@
 {% block title %}Logbooks{% endblock %}
 
 {% block body %}
-    <script type="module" src="../index.js"></script>
-
     <h1>Logbooks</h1>
 
     <table class="table">
@@ -37,7 +35,7 @@
                 <td>{{ logbook.getDateReturn() }}</td>
                 <td></td>
                 <td>
-                    <a onclick="putReturn(put({{ logbook.getUser() }}, {{ logbook.getBook() }}));">Return</a>
+                    <a>Return</a>
                 </td>
             </tr>
         {% else %}
