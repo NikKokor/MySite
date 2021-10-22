@@ -20,9 +20,13 @@
         {% for logbook in logbooks %}
             <tr>
                 <td>{{ logbook.getId() }}</td>
+                <td>      </td>
                 <td>{{ logbook.getUser() }}</td>
+                <td>      </td>
                 <td>{{ logbook.getBook() }}</td>
+                <td>      </td>
                 <td>{{ logbook.getDateTake() }}</td>
+                <td>      </td>
                 <td>{{ logbook.getDateReturn() }}</td>
             </tr>
         {% else %}
