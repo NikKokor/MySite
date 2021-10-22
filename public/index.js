@@ -1,6 +1,6 @@
-const axios = require('axios');
-
 (function putReturn(data = {}) {
+    import axios from "axios";
+    //const axios = require('axios');
     return axios({
         method: 'POST',
         url: "http://195.140.146.82/logbook/return",
@@ -10,6 +10,8 @@ const axios = require('axios');
 })('putReturn')
 
 function putReturn(data = {}) {
+    import axios from "axios";
+    const axios = require('axios');
     return axios({
         method: 'POST',
         url: "http://195.140.146.82/logbook/return",
