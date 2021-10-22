@@ -19,11 +19,11 @@
         <tbody>
         {% for logbook in logbooks %}
             <tr>
-                <td>{{ logbook.id}}</td>
-                <td>{{ logbook.user_id }}</td>
-                <td>{{ logbook.book_id }}</td>
-                <td>{{ logbook.date_take }}</td>
-                <td>{{ logbook.date_return }}</td>
+                <td>{{ logbook.getId() }}</td>
+                <td>{{ logbook.getUser() }}</td>
+                <td>{{ logbook.getBook() }}</td>
+                <td>{{ logbook.getDateTake() }}</td>
+                <td>{{ logbook.getDateReturn() }}</td>
                 <td>
                     <!<a href="{{ path('delete', {id: logbook.id}) }}">show</a>>
                     <!<a href="{{ path('players_edit', {'id': player.id}) }}">edit</a>>
