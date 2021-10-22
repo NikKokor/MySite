@@ -5,11 +5,15 @@
 {% block body %}
     <script>
         import {putReturn} from "./index";
-        let body = {
-            user_id: {{ logbook.getUser() }},
-            book_id: {{ logbook.getBook() }}
-        };
-        let json = JSON.stringify(body);
+
+        function put(u_id, b_id) {
+            let body = {
+                user_id: u_id,
+                book_id: b_id
+            };
+            return JSON.stringify(body);
+        }
+
     </script>
     <h1>Logbooks</h1>
 
@@ -43,7 +47,7 @@
                 <td>{{ logbook.getDateReturn() }}</td>
                 <td></td>
                 <td>
-                    <a onclick="putReturn(json)">Return</a>
+                    <a onclick="putReturn(put({{ logbook.getUser() }}, {{ logbook.getBook() }}))">Return</a>
                 </td>
             </tr>
         {% else %}
