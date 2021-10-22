@@ -26,6 +26,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class LogbookController extends ApiController
 {
     /**
+     * @Route("/", name="logbook_index", methods={"GET"})
+     */
+    public function index(LogbookRepository $logbookRepository): Response
+    {
+        return $this->render('logbook/index.html.twig', [
+            'logbooks' => $logbookRepository->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/add", name="add_record", methods={"POST"})
      */
     public function addRecord(Request $request) : JsonResponse
