@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Entity;
+
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -9,7 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="logbook")
  * @ORM\HasLifecycleCallbacks()
  */
-class Logbook {
+class Logbook
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -38,12 +41,12 @@ class Logbook {
      */
     private $date_return;
 
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUser() : ?int
+    public function getUser(): ?int
     {
         return $this->user_id;
     }
@@ -84,7 +87,10 @@ class Logbook {
 
     public function getDateReturn(): string
     {
-        return $this->date_return->format('Y\-m\-d h:i:s');
+        if ($this->date_return == null)
+            return "not returned";
+        else
+            return $this->date_return->format('Y\-m\-d h:i:s');
     }
 
     /**
