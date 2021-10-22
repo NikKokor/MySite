@@ -89,7 +89,8 @@ class LogbookController extends ApiController
                     'author' => $book->getAuthor(),
                     'year' => $book->getYear()
                 ],
-                'date_take' => $record->getDateTake()
+                'date_take' => $record->getDateTake(),
+                'date_return' => $record->getDateReturn()
             );
             $arrayRecords[] = $recordData;
         }
@@ -129,7 +130,8 @@ class LogbookController extends ApiController
                     'author' => $book->getAuthor(),
                     'year' => $book->getYear()
                 ],
-                'date_take' => $record->getDateTake()
+                'date_take' => $record->getDateTake(),
+                'date_return' => $record->getDateReturn()
             );
             $arrayRecords[] = $recordData;
         }
