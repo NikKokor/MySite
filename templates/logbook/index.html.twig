@@ -59,7 +59,7 @@
                 <td>{{ logbook.getDateReturn() }}</td>
                 <td></td>
                 <td>
-                    <a onclick="putReturn(put({{ logbook.getUser() }}, {{ logbook.getBook() }}))" href="">Return</a>
+                    <a onclick="putReturn('put({{ logbook.getUser() }}, {{ logbook.getBook() }})')" href="">Return</a>
                 </td>
             </tr>
         {% else %}
