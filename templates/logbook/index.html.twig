@@ -2,7 +2,7 @@
 
 {% block title %}Logbooks{% endblock %}
 
-{% block body %}
+{% block javascripts %}
     <script>
         import axios from "axios";
 
@@ -24,6 +24,9 @@
         }
 
     </script>
+{% endblock %}
+
+{% block body %}
     <h1>Logbooks</h1>
 
     <table class="table">
