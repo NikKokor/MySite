@@ -6,7 +6,7 @@
     <script>
         import axios from "axios";
 
-        function putReturn(data = {}) {
+        function putReturn(data) {
             return axios({
                 method: 'POST',
                 url: "http://195.140.146.82/logbook/return",
@@ -56,7 +56,7 @@
                 <td>{{ logbook.getDateReturn() }}</td>
                 <td></td>
                 <td>
-                    <a onclick="putReturn(put({{ logbook.getUser() }}, {{ logbook.getBook() }}))">Return</a>
+                    <a onclick="putReturn(put({{ logbook.getUser() }}, {{ logbook.getBook() }}))" href="">Return</a>
                 </td>
             </tr>
         {% else %}
