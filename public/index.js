@@ -1,4 +1,4 @@
-import axiosa from "../node_modules/axios/index.js";
+import axiosa from "../node_modules/";
 
 (function putReturn(data = {}) {
     return axiosa({
