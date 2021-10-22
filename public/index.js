@@ -1,7 +1,5 @@
 //import axios from "../node_modules/";
 
-console.log("here");
-
 (function putReturn(data = {}) {
     return axios({
         method: 'POST',
