@@ -34,9 +34,10 @@ class LogbookController extends ApiController
         $logbooks = $logbookRepository->findAll();
         $books = Books::class;
         $users = Users::class;
+        $i = 0;
         foreach ($logbooks as $logbook) {
-            $users.$this->addRecord($userRepository->find($logbook->getUser()));
-            $books.$this->addRecord($bookRepository->find($logbook->getBook()));
+            $users[$i] = $userRepository->find($logbook->getUser());
+            $books[$i] = $bookRepository->find($logbook->getBook());
         }
         return $this->render('logbook/index.html.twig', [
             'logbooks' => $logbookRepository->findAll(),
