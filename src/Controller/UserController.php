@@ -113,7 +113,7 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/{id}", name="user_put", methods={"PUT"})
+     * @Route("/put/{id}", name="user_put", methods={"PUT"})
      */
     public function updateUser(Request $request, UserRepository $userRepository, $id): JsonResponse
     {
@@ -158,7 +158,7 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/{id}", name="user_delete", methods={"DELETE", "GET"})
+     * @Route("/delete/{id}", name="user_delete", methods={"DELETE", "GET"})
      */
     public function deleteUser(UserRepository $userRepository, $id): JsonResponse
     {
