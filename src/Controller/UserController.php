@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Entity\Books;
 use App\Entity\Logbook;
+use App\Form\UserAdd;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use MongoDB\Driver\Exception\Exception;
@@ -37,29 +38,46 @@ class UserController extends ApiController
      */
     public function addUser(Request $request) : JsonResponse
     {
-        try {
-            $request = $this->transformJsonBody($request);
-            $entityManager = $this->getDoctrine()->getManager();
-            $user = new Users();
-            $user->setLogin($request->get('login'));
-            $user->setPassword($request->get('password'));
+        $user = new Users();
+        $form = $this->createForm(UserAdd::class, $user);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $data = [
-                'status' => Response::HTTP_OK,
-                'success' => "User added successfully",
-            ];
-            return $this->response($data,[]);
+            return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
         }
-        catch (\Exception $e) {
-            $data = [
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => "Data no valid",
-            ];
-            return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
-        }
+
+        return $this->renderForm('user/add.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+
+//        try {
+//            $request = $this->transformJsonBody($request);
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $user = new Users();
+//            $user->setLogin($request->get('login'));
+//            $user->setPassword($request->get('password'));
+//
+//            $entityManager->persist($user);
+//            $entityManager->flush();
+//
+//            $data = [
+//                'status' => Response::HTTP_OK,
+//                'success' => "User added successfully",
+//            ];
+//            return $this->response($data,[]);
+//        }
+//        catch (\Exception $e) {
+//            $data = [
+//                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+//                'errors' => "Data no valid",
+//            ];
+//            return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
+//        }
     }
 
     /**
