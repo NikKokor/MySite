@@ -32,8 +32,8 @@ class LogbookController extends ApiController
     public function index(UserRepository $userRepository, BookRepository $bookRepository, LogbookRepository $logbookRepository): Response
     {
         $logbooks = $logbookRepository->findAll();
-        $books = Books::class;
-        $users = Users::class;
+        $books = new Books();
+        $users = new Users();
         $i = 0;
         foreach ($logbooks as $logbook) {
             $users[$i] = $userRepository->find($logbook->getUser());
