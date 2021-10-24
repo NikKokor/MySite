@@ -36,7 +36,7 @@ class LogbookController extends ApiController
     }
 
     /**
-     * @Route("/add", name="add_record", methods={"POST"})
+     * @Route("/add", name="add_record", methods={"POST", "GET"})
      */
     public function addRecord(Request $request) : JsonResponse
     {

@@ -33,7 +33,7 @@ class BookController extends ApiController
     }
 
     /**
-     * @Route("/add", name="book_add", methods={"POST"})
+     * @Route("/add", name="book_add", methods={"POST", "GET"})
      */
     public function addBook(Request $request) : JsonResponse
     {
