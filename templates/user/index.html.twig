@@ -5,6 +5,7 @@
 {% block body %}
     <h1>Users</h1>
 
+    <a href="{{ path('user_add') }}">Add user</a>
     <table class="table">
         <thead>
         <tr>
@@ -37,4 +38,5 @@
         {% endfor %}
         </tbody>
     </table>
+    <a href="{{ path('logbook_index') }}">Logbooks</a>
 {% endblock %}
