@@ -118,7 +118,7 @@ class BookController extends ApiController
     }
 
     /**
-     * @Route("/{id}", name="book_delete", methods={"DELETE", "GET"})
+     * @Route("/delete/{id}", name="book_delete", methods={"DELETE", "GET"})
      */
     public function deleteBook(BookRepository $bookRepository, $id): JsonResponse
     {

@@ -158,7 +158,7 @@ class LogbookController extends ApiController
     }
 
     /**
-     * @Route("/{id}", name="record_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="record_delete", methods={"DELETE"})
      */
     public function deleteRecord(LogbookRepository $logbookRepository, $id): JsonResponse
     {
