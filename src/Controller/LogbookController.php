@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Class LogbookController
  * @package App\Controller
- * @Route("/logbook")
+ * @Route("/")
  */
 class LogbookController extends ApiController
 {
