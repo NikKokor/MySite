@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Entity\Books;
 use App\Entity\Logbook;
+use App\Form\BookAdd;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use MongoDB\Driver\Exception\Exception;
@@ -35,32 +36,49 @@ class BookController extends ApiController
     /**
      * @Route("/add", name="book_add", methods={"POST", "GET"})
      */
-    public function addBook(Request $request) : JsonResponse
+    public function addBook(Request $request) : Response
     {
-        try {
-            $request = $this->transformJsonBody($request);
-            $entityManager = $this->getDoctrine()->getManager();
-            $book = new Books();
-            $book->setName($request->get('name'));
-            $book->setAuthor($request->get('author'));
-            $book->setYear($request->get('year'));
+        $book = new Books();
+        $form = $this->createForm(BookAdd::class, $book);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($book);
             $entityManager->flush();
 
-            $data = [
-                'status' => Response::HTTP_OK,
-                'success' => "Book added successfully",
-            ];
-            return $this->response($data,[]);
+            return $this->redirectToRoute('book_index', [], Response::HTTP_SEE_OTHER);
         }
-        catch (\Exception $e) {
-            $data = [
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => "Data no valid",
-            ];
-            return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
-        }
+
+        return $this->renderForm('book/add.html.twig', [
+            'book' => $book,
+            'form' => $form,
+        ]);
+
+//        try {
+//            $request = $this->transformJsonBody($request);
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $book = new Books();
+//            $book->setName($request->get('name'));
+//            $book->setAuthor($request->get('author'));
+//            $book->setYear($request->get('year'));
+//
+//            $entityManager->persist($book);
+//            $entityManager->flush();
+//
+//            $data = [
+//                'status' => Response::HTTP_OK,
+//                'success' => "Book added successfully",
+//            ];
+//            return $this->response($data,[]);
+//        }
+//        catch (\Exception $e) {
+//            $data = [
+//                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+//                'errors' => "Data no valid",
+//            ];
+//            return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
+//        }
     }
 
     /**

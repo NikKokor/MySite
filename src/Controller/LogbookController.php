@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Entity\Books;
 use App\Entity\Logbook;
+use App\Form\LogbookAdd;
 use App\Repository\LogbookRepository;
 use App\Repository\BookRepository;
 use App\Repository\UserRepository;
@@ -40,30 +41,48 @@ class LogbookController extends ApiController
      */
     public function addRecord(Request $request) : JsonResponse
     {
-        try {
-            $request = $this->transformJsonBody($request);
-            $entityManager = $this->getDoctrine()->getManager();
-            $record = new Logbook();
-            $record->setBook($request->get('book_id'));
-            $record->setUser($request->get('user_id'));
-            $record->setDateTake(new DateTime());
+        $logbook = new Logbook();
+        $form = $this->createForm(LogbookAdd::class, $logbook);
+        $form->handleRequest($request);
 
-            $entityManager->persist($record);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $logbook->setDateTake(new DateTime());
+            $entityManager->persist($logbook);
             $entityManager->flush();
 
-            $data = [
-                'status' => Response::HTTP_OK,
-                'success' => "Record added successfully",
-            ];
-            return $this->response($data,[]);
+            return $this->redirectToRoute('logbook_index', [], Response::HTTP_SEE_OTHER);
         }
-        catch (\Exception $e) {
-            $data = [
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => "Data no valid",
-            ];
-            return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
-        }
+
+        return $this->renderForm('logbook/add.html.twig', [
+            'logbook' => $logbook,
+            'form' => $form,
+        ]);
+
+//        try {
+//            $request = $this->transformJsonBody($request);
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $record = new Logbook();
+//            $record->setBook($request->get('book_id'));
+//            $record->setUser($request->get('user_id'));
+//            $record->setDateTake(new DateTime());
+//
+//            $entityManager->persist($record);
+//            $entityManager->flush();
+//
+//            $data = [
+//                'status' => Response::HTTP_OK,
+//                'success' => "Record added successfully",
+//            ];
+//            return $this->response($data,[]);
+//        }
+//        catch (\Exception $e) {
+//            $data = [
+//                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+//                'errors' => "Data no valid",
+//            ];
+//            return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
+//        }
     }
 
     /**
