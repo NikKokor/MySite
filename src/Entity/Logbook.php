@@ -24,12 +24,12 @@ class Logbook
      * @ORM\Column(type="integer")
      *
      */
-    private $user_id;
+    protected $user_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $book_id;
+    protected $book_id;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
