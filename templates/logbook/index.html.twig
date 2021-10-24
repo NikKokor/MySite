@@ -47,7 +47,7 @@
                     <a href="{{ path('return_book', {'user_id': logbook.getUser(), 'book_id': logbook.getBook()}) }}">Return</a>
                 </td>
             </tr>
-
+            {% set i = i + 1 %}
         {% else %}
             <tr>
                 <td colspan="6">no records found</td>
