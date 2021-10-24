@@ -39,7 +39,7 @@ class LogbookController extends ApiController
     /**
      * @Route("/add", name="add_record", methods={"POST", "GET"})
      */
-    public function addRecord(Request $request) : JsonResponse
+    public function addRecord(Request $request) : Response
     {
         $logbook = new Logbook();
         $form = $this->createForm(LogbookAdd::class, $logbook);
