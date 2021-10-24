@@ -245,7 +245,7 @@ class LogbookController extends ApiController
                     'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'errors' => "Data no valid",
                 ];
-                return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
+                return $this->redirectToRoute('logbook_index', [], Response::HTTP_SEE_OTHER);
             }
         }
     }
