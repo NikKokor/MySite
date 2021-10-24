@@ -31,7 +31,7 @@
                 <td>{{ book.getYear() }}</td>
                 <td></td>
                 <td>
-                    <a href="{{ path('return_book', {'user_id': logbook.getUser(), 'book_id': logbook.getBook()}) }}">Return</a>
+                    <a href="{{ path('book_delete', {'id': book.getId()}) }}">Delete</a>
                 </td>
             </tr>
         {% else %}

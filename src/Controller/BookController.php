@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Class BookController
  * @package App\Controller
- * @Route("/book", name="book_api")
+ * @Route("/book")
  */
 class BookController extends ApiController
 {

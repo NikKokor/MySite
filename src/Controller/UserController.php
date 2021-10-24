@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Class UserController
  * @package App\Controller
- * @Route("/user", name="nik_api")
+ * @Route("/user")
  */
 class UserController extends ApiController
 {
