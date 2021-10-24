@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+    <h1>Users</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <td></td>
+            <th>Login</th>
+            <td></td>
+            <th>Password</th>
+            <td></td>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.getId() }}</td>
+                <td></td>
+                <td>{{ user.getLogin() }}</td>
+                <td></td>
+                <td>{{ user.getPassword() }}</td>
+                <td></td>
+                <td>
+                    <a href="{{ path('user_delete', {'id': user.getId()}) }}">Delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

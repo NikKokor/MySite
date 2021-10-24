@@ -23,6 +23,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class BookController extends ApiController
 {
     /**
+     * @Route("/", name="user_index", methods={"GET"})
+     */
+    public function index(BookRepository $bookRepository): Response
+    {
+        return $this->render('book/index.html.twig', [
+            'books' => $bookRepository->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/add", name="book_add", methods={"POST"})
      */
     public function addBook(Request $request) : JsonResponse
@@ -108,7 +118,7 @@ class BookController extends ApiController
     }
 
     /**
-     * @Route("/{id}", name="book_delete", methods={"DELETE"})
+     * @Route("/{id}", name="book_delete", methods={"DELETE", "GET"})
      */
     public function deleteBook(BookRepository $bookRepository, $id): JsonResponse
     {

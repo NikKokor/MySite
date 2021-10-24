@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Books{% endblock %}
+
+{% block body %}
+    <h1>Books</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <td></td>
+            <th>Name</th>
+            <td></td>
+            <th>Author</th>
+            <td></td>
+            <th>Year</th>
+            <td></td>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.getId() }}</td>
+                <td></td>
+                <td>{{ book.getName() }}</td>
+                <td></td>
+                <td>{{ book.getAuthor() }}</td>
+                <td></td>
+                <td>{{ book.getYear() }}</td>
+                <td></td>
+                <td>
+                    <a href="{{ path('return_book', {'user_id': logbook.getUser(), 'book_id': logbook.getBook()}) }}">Return</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

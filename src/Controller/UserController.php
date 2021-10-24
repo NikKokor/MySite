@@ -23,6 +23,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserController extends ApiController
 {
     /**
+     * @Route("/", name="user_index", methods={"GET"})
+     */
+    public function index(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/add", name="user_add", methods={"POST"})
      */
     public function addUser(Request $request) : JsonResponse
@@ -148,7 +158,7 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     * @Route("/{id}", name="user_delete", methods={"DELETE", "GET"})
      */
     public function deleteUser(UserRepository $userRepository, $id): JsonResponse
     {
