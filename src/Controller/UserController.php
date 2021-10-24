@@ -36,7 +36,7 @@ class UserController extends ApiController
     /**
      * @Route("/add", name="user_add", methods={"POST", "GET"})
      */
-    public function addUser(Request $request) : JsonResponse
+    public function addUser(Request $request) : Response
     {
         $user = new Users();
         $form = $this->createForm(UserAdd::class, $user);
