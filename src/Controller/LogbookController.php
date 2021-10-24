@@ -29,10 +29,19 @@ class LogbookController extends ApiController
     /**
      * @Route("/", name="logbook_index", methods={"GET"})
      */
-    public function index(LogbookRepository $logbookRepository): Response
+    public function index(UserRepository $userRepository, BookRepository $bookRepository, LogbookRepository $logbookRepository): Response
     {
+        $logbooks = $logbookRepository->findAll();
+        $books = Books::class;
+        $users = Users::class;
+        foreach ($logbooks as $logbook) {
+            $users->$this->addRecord($userRepository->find($logbook->getUser()));
+            $books->$this->addRecord($bookRepository->find($logbook->getBook()));
+        }
         return $this->render('logbook/index.html.twig', [
             'logbooks' => $logbookRepository->findAll(),
+            'books' => $books,
+            'users' => $users,
         ]);
     }
 

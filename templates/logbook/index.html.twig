@@ -22,13 +22,22 @@
         </tr>
         </thead>
         <tbody>
+        {% set i = 0 %}
         {% for logbook in logbooks %}
             <tr>
                 <td>{{ logbook.getId() }}</td>
                 <td></td>
-                <td>{{ logbook.getUser() }}</td>
+                <td>{{ users[i].getId() }}</td>
                 <td></td>
-                <td>{{ logbook.getBook() }}</td>
+                <td>{{ users[i].getLogin() }}</td>
+                <td></td>
+                <td>{{ books[i].getId() }}</td>
+                <td></td>
+                <td>{{ books[i].getName() }}</td>
+                <td></td>
+                <td>{{ books[i].getAuthor() }}</td>
+                <td></td>
+                <td>{{ books[i].getYear() }}</td>
                 <td></td>
                 <td>{{ logbook.getDateTake() }}</td>
                 <td></td>
@@ -38,6 +47,7 @@
                     <a href="{{ path('return_book', {'user_id': logbook.getUser(), 'book_id': logbook.getBook()}) }}">Return</a>
                 </td>
             </tr>
+            {% set i = i + 1 %}
         {% else %}
             <tr>
                 <td colspan="6">no records found</td>
