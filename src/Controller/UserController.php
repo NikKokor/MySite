@@ -179,6 +179,6 @@ class UserController extends ApiController
             'status' => Response::HTTP_OK,
             'errors' => "User deleted successfully",
         ];
-        return $this->response($data,[]);
+        return $this->redirectToRoute('logbook_index', [], Response::HTTP_SEE_OTHER);
     }
 }
