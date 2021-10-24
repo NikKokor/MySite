@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class BookController extends ApiController
 {
     /**
-     * @Route("/", name="user_index", methods={"GET"})
+     * @Route("/", name="book_index", methods={"GET"})
      */
     public function index(BookRepository $bookRepository): Response
     {
