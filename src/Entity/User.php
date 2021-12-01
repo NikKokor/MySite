@@ -3,24 +3,26 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
-{
+class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
     private $username;
 
@@ -35,17 +37,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
-    public function getId(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity=Todo::class, mappedBy="user")
+     */
+    private $Todo;
+
+    public function __construct()
+    {
+        $this->Todo = new ArrayCollection();
+    }
+
+    public function getId() : ?int
     {
         return $this->id;
     }
 
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
-    public function getUsername(): string
+    public function getUsername() : ?string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
     public function setUsername(string $username): self
@@ -56,13 +65,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
+     * The public representation of the user (e.g. a username, an email address, etc.)
      *
      * @see UserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
@@ -80,21 +89,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
 
         return $this;
     }
@@ -118,4 +112,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getTodo(): Collection
+    {
+        return $this->Todo;
+    }
+
+    public function addTodo(Todo $Todo): self
+    {
+        if (!$this->Todo->contains($Todo)) {
+            $this->Todo[] = $Todo;
+            $Todo->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTodo(Todo $Todo): self
+    {
+        if ($this->Todo->removeElement($Todo)) {
+            // set the owning side to null (unless already changed)
+            if ($Todo->getUser() === $this) {
+                $Todo->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }
+
