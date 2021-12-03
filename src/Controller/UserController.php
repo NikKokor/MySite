@@ -147,8 +147,7 @@ class UserController extends ApiController
     {
         try {
             $token = $request->headers->get('Token');
-            $Token = $this->transformJsonBody($token);
-            $user = $userRepository->findBy(["password" => $Token]);
+            $user = $userRepository->findBy(["password" => $token]);
             $entityManager = $this->getDoctrine()->getManager();
 
             if (!$user) {
