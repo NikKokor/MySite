@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -7,27 +8,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-/**
- * Class ApiLoginController
- * @package App\Controller
- * @Route("/")
- */
 class ApiLoginController extends AbstractController
 {
     /**
-     * @Route("/check_login", name="api_login", methods={"POST"})
+     * @Route("/login", name="api_login")
      */
-    public function checkLogin(#[CurrentUser] ?User $user) : Response
+    public function index(): Response
     {
-        if (null === $user) {
-            return $this->json([
-                'message' => 'missing credentials',
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-
-        $token = $user->getPassword();
-        return $this->json([
-            'token' => $token,
+	return $this->json([
+            'token' => $this->getUser() ? $this->getUser()->getPassword() : null
         ]);
     }
 }
