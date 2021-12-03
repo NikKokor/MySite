@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,14 +17,13 @@ class ApiLoginController extends AbstractController
     /**
      * @Route("/check_login", name="api_login", methods={"POST"})
      */
-    public function checkLogin(#[CurrentUser] ?User $user): Response
+    public function checkLogin(#[CurrentUser] ?User $user) : Response
     {
-
         if (null === $user) {
             return $this->json([
                 'message' => 'missing credentials',
             ], Response::HTTP_UNAUTHORIZED);
-        };
+        }
 
         $token = $user->getPassword();
         return $this->json([
