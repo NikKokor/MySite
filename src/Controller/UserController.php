@@ -161,14 +161,15 @@ class UserController extends ApiController
             $request = $this->transformJsonBody($request);
 
             $login = $request->get('login');
-            $old_password = $passwordHasher->hashPassword($user, $request->get('old_password'));
-            $new_password = $request->get('new_password');
-
+            if(!empty($request->get('old_password')) && !empty($request->get('new_password'))) {
+                $old_password = $passwordHasher->hashPassword($user, $request->get('old_password'));
+                $new_password = $request->get('new_password');
+                if ($user->getPassword() == $old_password) {
+                    $user->setPassword($passwordHasher->hashPassword($user, $new_password));
+                }
+            }
             if (!empty($login)) {
                 $user->setLogin($login);
-            }
-            if (!empty($new_password) && ($user->getPassword() == $old_password)) {
-                $user->setPassword($passwordHasher->hashPassword($user, $new_password));
             }
 
             $entityManager->flush();
