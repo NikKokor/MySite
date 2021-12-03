@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Controller;
 
-use App\Entity\Users;
+use App\Entity\User;
 use App\Entity\Books;
 use App\Entity\Logbook;
 use App\Form\UserAdd;
@@ -15,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Class UserController
@@ -36,14 +36,16 @@ class UserController extends ApiController
     /**
      * @Route("/add", name="user_add", methods={"POST", "GET"})
      */
-    public function addUser(Request $request) : Response
+    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher) : Response
     {
-        $user = new Users();
+        $user = new User();
         $form = $this->createForm(UserAdd::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -54,30 +56,36 @@ class UserController extends ApiController
             'user' => $user,
             'form' => $form,
         ]);
+    }
 
-//        try {
-//            $request = $this->transformJsonBody($request);
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $user = new Users();
-//            $user->setLogin($request->get('login'));
-//            $user->setPassword($request->get('password'));
-//
-//            $entityManager->persist($user);
-//            $entityManager->flush();
-//
-//            $data = [
-//                'status' => Response::HTTP_OK,
-//                'success' => "User added successfully",
-//            ];
-//            return $this->response($data,[]);
-//        }
-//        catch (\Exception $e) {
-//            $data = [
-//                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-//                'errors' => "Data no valid",
-//            ];
-//            return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
-//        }
+    /**
+     * @Route("/reg", name="user_reg", methods={"POST"})
+     */
+    public function regUser(Request $request, UserPasswordHasherInterface $passwordHasher) : JsonResponse
+    {
+        try {
+            $request = $this->transformJsonBody($request);
+            $entityManager = $this->getDoctrine()->getManager();
+            $user = new User();
+            $user->setUsername($request->get('login'));
+            $user->setPassword($passwordHasher->hashPassword($user, $request->get('password')));
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $data = [
+                'status' => Response::HTTP_OK,
+                'success' => "User registry successfully",
+            ];
+            return $this->response($data,[]);
+        }
+        catch (\Exception $e) {
+            $data = [
+                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'errors' => "Data no valid",
+            ];
+            return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
+        }
     }
 
     /**
@@ -97,7 +105,8 @@ class UserController extends ApiController
 
         $userData = array(
             'id' => $user->getId(),
-            'login' => $user->getLogin()
+            'login' => $user->getUsername(),
+            'count Todo' => $user->getCountTodo(),
         );
 
         return $this->response($userData,[]);
@@ -114,7 +123,8 @@ class UserController extends ApiController
         foreach ($users as $user){
             $obj = [
                 "id" => $user->getId(),
-                "login" => $user->getLogin()
+                "login" => $user->getUsername(),
+                'count Todo' => $user->getCountTodo(),
             ];
             $arrayUsers[] = $obj;
         }
@@ -133,7 +143,7 @@ class UserController extends ApiController
     /**
      * @Route("/put/{id}", name="user_put", methods={"PUT"})
      */
-    public function updateUser(Request $request, UserRepository $userRepository, $id): JsonResponse
+    public function updateUser(Request $request, UserRepository $userRepository, $id, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         try {
             $user = $userRepository->find($id);
@@ -150,13 +160,14 @@ class UserController extends ApiController
             $request = $this->transformJsonBody($request);
 
             $login = $request->get('login');
-            $password = $request->get('password');
+            $old_password = $passwordHasher->hashPassword($user, $request->get('old_password'));
+            $new_password = $request->get('new_password');
 
             if (!empty($login)) {
                 $user->setLogin($login);
             }
-            if (!empty($password)) {
-                $password->setPassword($password);
+            if (!empty($new_password) && ($user->getPassword() == $old_password)) {
+                $user->setPassword($passwordHasher->hashPassword($user, $new_password));
             }
 
             $entityManager->flush();
@@ -178,11 +189,22 @@ class UserController extends ApiController
     /**
      * @Route("/delete/{id}", name="user_delete", methods={"DELETE", "GET"})
      */
-    public function deleteUser(UserRepository $userRepository, $id): JsonResponse
+    public function deleteUser(Request $request, UserRepository $userRepository, $id, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $user = $userRepository->find($id);
+        $request = $this->transformJsonBody($request);
 
         if (!$user) {
+            $data = [
+                'status' => Response::HTTP_NOT_FOUND,
+                'errors' => "User not found",
+            ];
+            return $this->response($data, [Response::HTTP_NOT_FOUND]);
+        }
+
+        $password = $passwordHasher->hashPassword($request->get('password'));
+
+        if ($password != $user->getPassword()) {
             $data = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'errors' => "User not found",
@@ -197,6 +219,8 @@ class UserController extends ApiController
             'status' => Response::HTTP_OK,
             'errors' => "User deleted successfully",
         ];
-        return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
+
+        //return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->response($data, []);
     }
 }

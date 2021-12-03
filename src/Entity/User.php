@@ -130,6 +130,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this->Todo;
     }
 
+    public function getCountTodo(): int
+    {
+        $count = 0;
+        foreach ($this->Todo as $todo) {
+            $count++;
+        }
+        return $count;
+    }
+
     public function addTodo(Todo $Todo): self
     {
         if (!$this->Todo->contains($Todo)) {
