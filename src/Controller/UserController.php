@@ -105,7 +105,7 @@ class UserController extends ApiController
 
         $userData = array(
             'id' => $user->getId(),
-            'login' => $user->getUsername(),
+            'username' => $user->getUsername(),
             'count Todo' => $user->getCountTodo(),
         );
 
@@ -123,7 +123,7 @@ class UserController extends ApiController
         foreach ($users as $user){
             $obj = [
                 "id" => $user->getId(),
-                "login" => $user->getUsername(),
+                "username" => $user->getUsername(),
                 'count Todo' => $user->getCountTodo(),
             ];
             $arrayUsers[] = $obj;
@@ -160,7 +160,7 @@ class UserController extends ApiController
 
             $request = $this->transformJsonBody($request);
 
-            $login = $request->get('login');
+            $login = $request->get('username');
             if(!empty($request->get('old_password')) && !empty($request->get('new_password'))) {
                 $old_password = $passwordHasher->hashPassword($user, $request->get('old_password'));
                 $new_password = $request->get('new_password');
