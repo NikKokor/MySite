@@ -169,7 +169,7 @@ class UserController extends ApiController
                 }
             }
             if (!empty($login)) {
-                $user->setLogin($login);
+                $user->getUsername($login);
             }
 
             $entityManager->flush();
