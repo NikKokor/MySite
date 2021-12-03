@@ -141,12 +141,14 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/put/{id}", name="user_put", methods={"PUT"})
+     * @Route("/put", name="user_put", methods={"PUT"})
      */
-    public function updateUser(Request $request, UserRepository $userRepository, $id, UserPasswordHasherInterface $passwordHasher): JsonResponse
+    public function updateUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         try {
-            $user = $userRepository->find($id);
+            $token = $request->headers->get('Token');
+            $Token = $this->jwtDecode($token);
+            $user = $userRepository->findBy(["password" => $Token]);
             $entityManager = $this->getDoctrine()->getManager();
 
             if (!$user) {
