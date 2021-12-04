@@ -164,14 +164,16 @@ class UserController extends ApiController
             if(!empty($request->get('old_password')) && !empty($request->get('new_password'))) {
                 $old_password = $passwordHasher->hashPassword($user, $request->get('old_password'));
                 $new_password = $request->get('new_password');
+                $data = [
+                    'password' => $user->getPassword(),
+                    'old_password' => $old_password,
+                    'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                    'errors' => "Old password incorrect",
+                ];
                 if ($user->getPassword() == $old_password) {
                     $user->setPassword($passwordHasher->hashPassword($user, $new_password));
                 }
                 else {
-                    $data = [
-                        'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                        'errors' => "Data no valid",
-                    ];
                     return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
                 }
             }
