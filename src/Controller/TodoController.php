@@ -24,7 +24,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class TodoController extends ApiController
 {
     /**
-     * @Route("/add", name="todo_get_all", methods={"POST"})
+     * @Route("/add", name="todo_add", methods={"POST"})
      */
     public function addTodo(Request $request, UserRepository $userRepository): JsonResponse
     {
