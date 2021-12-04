@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Todo;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -37,11 +36,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
      * @ORM\Column(type="string")
      */
     private $password;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Todo::class, mappedBy="user")
-     */
-    private $Todo;
 
     public function __construct()
     {
@@ -122,42 +116,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function getTodo(): Collection
-    {
-        return $this->Todo;
-    }
-
-    public function getCountTodo(): int
-    {
-        $count = 0;
-        foreach ($this->Todo as $todo) {
-            $count++;
-        }
-        return $count;
-    }
-
-    public function addTodo(Todo $Todo): self
-    {
-        if (!$this->Todo->contains($Todo)) {
-            $this->Todo[] = $Todo;
-            $Todo->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTodo(Todo $Todo): self
-    {
-        if ($this->Todo->removeElement($Todo)) {
-            // set the owning side to null (unless already changed)
-            if ($Todo->getUser() === $this) {
-                $Todo->setUser(null);
-            }
-        }
 
         return $this;
     }

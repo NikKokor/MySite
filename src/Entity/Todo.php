@@ -18,9 +18,9 @@ class Todo
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Todo")
+     * @ORM\Column(type="integer")
      */
-    private $user;
+    private $user_id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -37,14 +37,14 @@ class Todo
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?int
     {
-        return $this->user;
+        return $this->user_id;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(int $id): self
     {
-        $this->user = $user;
+        $this->user_id = $id;
 
         return $this;
     }
