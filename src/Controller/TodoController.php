@@ -31,6 +31,13 @@ class TodoController extends ApiController
         try {
             $token = $request->headers->get('Token');
             $user = $userRepository->findOneBy(["password" => $token]);
+            if ($user == null) {
+                $data = [
+                    'status' => Response::HTTP_UNAUTHORIZED,
+                    'errors' => "Token invalid",
+                ];
+                return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+            }
             $request = $this->transformJsonBody($request);
             $entityManager = $this->getDoctrine()->getManager();
             $todo = new Todo();
@@ -61,6 +68,13 @@ class TodoController extends ApiController
     {
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
+        if ($user == null) {
+            $data = [
+                'status' => Response::HTTP_UNAUTHORIZED,
+                'errors' => "Token invalid",
+            ];
+            return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+        }
         $todos = $todoRepository->findBy(["user_id" => $user->getId()]);
 
         $arrayTodo = [

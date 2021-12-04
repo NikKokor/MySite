@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Todo;
@@ -161,6 +160,13 @@ class UserController extends ApiController
         try {
             $token = $request->headers->get('Token');
             $user = $userRepository->findOneBy(["password" => $token]);
+            if ($user == null) {
+                $data = [
+                    'status' => Response::HTTP_UNAUTHORIZED,
+                    'errors' => "Token invalid",
+                ];
+                return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+            }
             $entityManager = $this->getDoctrine()->getManager();
 
             if (!$user) {
@@ -213,6 +219,13 @@ class UserController extends ApiController
     {
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
+        if ($user == null) {
+            $data = [
+                'status' => Response::HTTP_UNAUTHORIZED,
+                'errors' => "Token invalid",
+            ];
+            return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+        }
         $todos = $todoRepository->findBy(["user_id" => $user->getId()]);
         $entityManager = $this->getDoctrine()->getManager();
 
