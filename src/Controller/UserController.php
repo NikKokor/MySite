@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\User;
@@ -36,7 +37,7 @@ class UserController extends ApiController
     /**
      * @Route("/add", name="user_add", methods={"POST", "GET"})
      */
-    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher) : Response
+    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserAdd::class, $user);
@@ -61,13 +62,13 @@ class UserController extends ApiController
     /**
      * @Route("/reg", name="user_reg", methods={"POST"})
      */
-    public function regUser(Request $request, UserPasswordHasherInterface $passwordHasher) : JsonResponse
+    public function regUser(Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         try {
             $request = $this->transformJsonBody($request);
             $entityManager = $this->getDoctrine()->getManager();
             $user = new User();
-            $user->setUsername($request->get('login'));
+            $user->setUsername($request->get('username'));
             $user->setPassword($passwordHasher->hashPassword($user, $request->get('password')));
 
             $entityManager->persist($user);
@@ -77,14 +78,13 @@ class UserController extends ApiController
                 'status' => Response::HTTP_OK,
                 'success' => "User registry successfully",
             ];
-            return $this->response($data,[]);
-        }
-        catch (\Exception $e) {
+            return $this->response($data, []);
+        } catch (\Exception $e) {
             $data = [
                 'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'errors' => "Data no valid",
             ];
-            return $this->response($data,[Response::HTTP_UNPROCESSABLE_ENTITY]);
+            return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
         }
     }
 
@@ -109,7 +109,7 @@ class UserController extends ApiController
             'count Todo' => $user->getCountTodo(),
         );
 
-        return $this->response($userData,[]);
+        return $this->response($userData, []);
     }
 
     /**
@@ -120,7 +120,7 @@ class UserController extends ApiController
         $users = $userRepository->findAll();
 
         $arrayUsers = [];
-        foreach ($users as $user){
+        foreach ($users as $user) {
             $obj = [
                 "id" => $user->getId(),
                 "username" => $user->getUsername(),
@@ -159,21 +159,18 @@ class UserController extends ApiController
             }
 
             $request = $this->transformJsonBody($request);
-
             $login = $request->get('username');
-            if(!empty($request->get('old_password')) && !empty($request->get('new_password'))) {
-                $old_password = $passwordHasher->hashPassword($user, $request->get('old_password'));
+
+            if (!empty($request->get('old_password')) && !empty($request->get('new_password'))) {
                 $new_password = $request->get('new_password');
-                $data = [
-                    'password' => $user->getPassword(),
-                    'old_password' => $old_password,
-                    'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                    'errors' => "Old password incorrect",
-                ];
-                if ($user->getPassword() == $old_password) {
+
+                if ($passwordHasher->isPasswordValid($user, $request->get('old_password'))) {
                     $user->setPassword($passwordHasher->hashPassword($user, $new_password));
-                }
-                else {
+                } else {
+                    $data = [
+                        'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                        'errors' => "Old password incorrect",
+                    ];
                     return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
                 }
             }
@@ -186,9 +183,8 @@ class UserController extends ApiController
                 'status' => Response::HTTP_OK,
                 'errors' => "User updated successfully",
             ];
-            return $this->response($data,[]);
-        }
-        catch (\Exception $e) {
+            return $this->response($data, []);
+        } catch (\Exception $e) {
             $data = [
                 'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'errors' => "Data no valid",
