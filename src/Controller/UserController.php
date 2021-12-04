@@ -196,22 +196,13 @@ class UserController extends ApiController
     /**
      * @Route("/delete/{id}", name="user_delete", methods={"DELETE", "GET"})
      */
-    public function deleteUser(Request $request, UserRepository $userRepository, $id, UserPasswordHasherInterface $passwordHasher): JsonResponse
+    public function deleteUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
-        $user = $userRepository->find($id);
+        $token = $request->headers->get('Token');
+        $user = $userRepository->findOneBy(["password" => $token]);
         $request = $this->transformJsonBody($request);
 
         if (!$user) {
-            $data = [
-                'status' => Response::HTTP_NOT_FOUND,
-                'errors' => "User not found",
-            ];
-            return $this->response($data, [Response::HTTP_NOT_FOUND]);
-        }
-
-        $password = $passwordHasher->hashPassword($request->get('password'));
-
-        if ($password != $user->getPassword()) {
             $data = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'errors' => "User not found",
