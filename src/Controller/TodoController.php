@@ -34,9 +34,9 @@ class TodoController extends ApiController
             $request = $this->transformJsonBody($request);
             $entityManager = $this->getDoctrine()->getManager();
             $todo = new Todo();
+            $todo->setUser($user->getId());
             $todo->setTitle($request->get('title'));
             $todo->setDescription($request->get('description'));
-            $user->addTodo($todo);
             $entityManager->persist($todo);
             $entityManager->flush();
 
@@ -57,11 +57,11 @@ class TodoController extends ApiController
     /**
      * @Route("/get", name="todo_get", methods={"GET"})
      */
-    public function getTodo(Request $request, UserRepository $userRepository): JsonResponse
+    public function getTodo(Request $request, UserRepository $userRepository, TodoRepository $todoRepository): JsonResponse
     {
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
-        $todos = $user->getTodo();
+        $todos = $todoRepository->findBy(["user_id" => $user->getId()]);
 
         $arrayTodo = [
             'username' => $user->getUsername()

@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Todo;
 use App\Entity\User;
-use App\Entity\Books;
-use App\Entity\Logbook;
 use App\Form\UserAdd;
+use App\Repository\TodoRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use MongoDB\Driver\Exception\Exception;
@@ -91,9 +91,15 @@ class UserController extends ApiController
     /**
      * @Route("/get/{id}", name="user_get", methods={"GET"})
      */
-    public function getUserByID(UserRepository $userRepository, $id): JsonResponse
+    public function getUserByID(UserRepository $userRepository, TodoRepository $todoRepository, $id): JsonResponse
     {
         $user = $userRepository->find($id);
+        $todos = $todoRepository->findBy(["user_id" => $id]);
+
+        $count = 0;
+        foreach ($todos as $todo) {
+            $count++;
+        }
 
         if (!$user) {
             $data = [
@@ -106,7 +112,7 @@ class UserController extends ApiController
         $userData = array(
             'id' => $user->getId(),
             'username' => $user->getUsername(),
-            'count Todo' => $user->getCountTodo(),
+            'count Todo' => $count,
         );
 
         return $this->response($userData, []);
@@ -115,16 +121,23 @@ class UserController extends ApiController
     /**
      * @Route("/get_all", name="user_get_all", methods={"GET"})
      */
-    public function getUsers(UserRepository $userRepository): JsonResponse
+    public function getUsers(UserRepository $userRepository, TodoRepository $todoRepository): JsonResponse
     {
         $users = $userRepository->findAll();
 
         $arrayUsers = [];
         foreach ($users as $user) {
+            $todos = $todoRepository->findBy(["user_id" => $user->getId()]);
+
+            $count = 0;
+            foreach ($todos as $todo) {
+                $count++;
+            }
+
             $obj = [
                 "id" => $user->getId(),
                 "username" => $user->getUsername(),
-                'count Todo' => $user->getCountTodo(),
+                'count Todo' => $count,
             ];
             $arrayUsers[] = $obj;
         }
@@ -196,11 +209,12 @@ class UserController extends ApiController
     /**
      * @Route("/delete/{id}", name="user_delete", methods={"DELETE", "GET"})
      */
-    public function deleteUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse
+    public function deleteUser(Request $request, UserRepository $userRepository, TodoRepository $todoRepository): JsonResponse
     {
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
-        $request = $this->transformJsonBody($request);
+        $todos = $todoRepository->findBy(["user_id" => $user->getId()]);
+        $entityManager = $this->getDoctrine()->getManager();
 
         if (!$user) {
             $data = [
@@ -210,7 +224,10 @@ class UserController extends ApiController
             return $this->response($data, [Response::HTTP_NOT_FOUND]);
         }
 
-        $entityManager = $this->getDoctrine()->getManager();
+        foreach ($todos as $todo) {
+            $entityManager->remove($todo);
+        }
+
         $entityManager->remove($user);
         $entityManager->flush();
         $data = [
