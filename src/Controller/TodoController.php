@@ -111,6 +111,7 @@ class TodoController extends ApiController
         foreach ($todos as $todo) {
             $obj = [
                 'id' => $todo->getId(),
+                'user_id' => $todo->getUser(),
                 'title' => $todo->getTitle(),
                 'description' => $todo->getDescription(),
             ];
@@ -126,5 +127,86 @@ class TodoController extends ApiController
         }
 
         return $this->response($arrayTodo, []);
+    }
+
+    /**
+     * @Route("/put/{id}", name="todo_put", methods={"PUT"})
+     */
+    public function updateUser(Request $request, UserRepository $userRepository, TodoRepository $todoRepository, $id): JsonResponse
+    {
+        try {
+            $token = $request->headers->get('Token');
+            $user = $userRepository->findOneBy(["password" => $token]);
+            if ($user == null) {
+                $data = [
+                    'status' => Response::HTTP_UNAUTHORIZED,
+                    'errors' => "Token invalid",
+                ];
+                return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+            }
+            $todo = $todoRepository->findBy($id);
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $request = $this->transformJsonBody($request);
+
+            $title = $request->get('title');
+            $description = $request->get('description');
+
+            if(!empty($title)){
+                $todo->setTitle($title);
+            }
+            if(!empty($description)){
+                $todo->setDescription($description);
+            }
+
+            $entityManager->flush();
+            $data = [
+                'status' => Response::HTTP_OK,
+                'errors' => "Todo updated successfully",
+            ];
+            return $this->response($data, []);
+        } catch (\Exception $e) {
+            $data = [
+                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'errors' => "Data no valid",
+            ];
+            return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
+        }
+    }
+
+    /**
+     * @Route("/delete/{id}", name="todo_delete", methods={"DELETE"})
+     */
+    public function deleteTodo(Request $request, UserRepository $userRepository, TodoRepository $todoRepository, $id): JsonResponse
+    {
+        $token = $request->headers->get('Token');
+        $user = $userRepository->findOneBy(["password" => $token]);
+        if ($user == null) {
+            $data = [
+                'status' => Response::HTTP_UNAUTHORIZED,
+                'errors' => "Token invalid",
+            ];
+            return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+        }
+        $todo = $todoRepository->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if (!$todo) {
+            $data = [
+                'status' => Response::HTTP_NOT_FOUND,
+                'errors' => "Todo not found",
+            ];
+            return $this->response($data, [Response::HTTP_NOT_FOUND]);
+        }
+
+        $entityManager->remove(todo);
+        $entityManager->flush();
+        $data = [
+            'status' => Response::HTTP_OK,
+            'errors' => "Todo deleted successfully",
+        ];
+
+        //return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->response($data, []);
     }
 }

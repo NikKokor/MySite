@@ -213,7 +213,7 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/delete/{id}", name="user_delete", methods={"DELETE", "GET"})
+     * @Route("/delete", name="user_delete", methods={"DELETE", "GET"})
      */
     public function deleteUser(Request $request, UserRepository $userRepository, TodoRepository $todoRepository): JsonResponse
     {
