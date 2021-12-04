@@ -144,7 +144,7 @@ class TodoController extends ApiController
                 ];
                 return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
             }
-            $todo = $todoRepository->findBy($id);
+            $todo = $todoRepository->find($id);
             $entityManager = $this->getDoctrine()->getManager();
 
             $request = $this->transformJsonBody($request);
