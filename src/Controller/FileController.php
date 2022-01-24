@@ -9,6 +9,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,15 +40,16 @@ class FileController extends ApiController
     public function addFile(Request $request, FileRepository $fileRepository, FileUploader $fileUploader) : JsonResponse
     {
         $fileData = $request->files->get('file');
-
+	$size = 0;
         if ($fileData) {
             try {
+		$size = $fileData->getSize();
                 $sluggedFileData = $fileUploader->upload($fileData);
             } catch (Exception $error) {
                 return $this->response([
                     'status' => Response::HTTP_CONFLICT,
                     'errors' => $error->getMessage(),
-                ], "403");
+                ], [Response::HTTP_CONFLICT]);
             }
 
 
@@ -56,7 +58,7 @@ class FileController extends ApiController
             $file->setName($sluggedFileData['name']);
             $file->setType($sluggedFileData['type']);
             $file->setDirectory($this->getParameter('files_directory'));
-            $file->setSize($fileData->getClientSize());
+            $file->setSize($size);
 
             $entityManager->persist($file);
             $entityManager->flush();
@@ -90,7 +92,7 @@ class FileController extends ApiController
     /**
      * @Route("/get_all", name="file_get_all", methods={"GET"})
      */
-    public function getAll(FileRepository $fileRepository, $name): JsonResponse
+    public function getAll(FileRepository $fileRepository): JsonResponse
     {
         $files = $fileRepository->findAll();
         $data = [];

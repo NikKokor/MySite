@@ -24,17 +24,17 @@ class File
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=100, unique=true)
+     * @ORM\Column(type="string", length=100)
      */
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=100, unique=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $size;
 
     /**
-     * @ORM\Column(type="string", length=100, unique=true)
+     * @ORM\Column(type="string", length=100)
      */
     private $directory;
 
@@ -67,12 +67,12 @@ class File
         return $this;
     }
 
-    public function getSize(): string
+    public function getSize(): int
     {
         return $this->size;
     }
 
-    public function setSize(string $size): self
+    public function setSize(int $size): self
     {
         $this->size = $size;
 
