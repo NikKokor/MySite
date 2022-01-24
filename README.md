@@ -33,3 +33,18 @@
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/put_todo.png)
 
 </details>
+
+<details>
+  <summary>File request</summary>
+  
+![alt text](https://github.com/NikKokor/nik/blob/master/screens/add_file.png)
+
+![alt text](https://github.com/NikKokor/nik/blob/master/screens/get_all_files.png)
+
+![alt text](https://github.com/NikKokor/nik/blob/master/screens/get_by_name_file.png)
+
+![alt text](https://github.com/NikKokor/nik/blob/master/screens/delete_file.png)
+
+![alt text](https://github.com/NikKokor/nik/blob/master/screens/get_all_after_delete_file.png)
+
+</details>
