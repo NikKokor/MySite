@@ -6,6 +6,7 @@ use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table(name="file")
  * @ORM\Entity(repositoryClass=FileRepository::class)
  */
 class File
@@ -17,8 +18,89 @@ class File
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     */
+    private $size;
+
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     */
+    private $directory;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSize(): string
+    {
+        return $this->size;
+    }
+
+    public function setSize(string $size): self
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getDirectory(): string
+    {
+        return $this->directory;
+    }
+
+    public function setDirectory(string $directory): self
+    {
+        $this->directory = $directory;
+
+        return $this;
+    }
+
+    public function getData(): array
+    {
+        return [
+            'name' => $this->getName(),
+            'size' => $this->getSize()
+        ];
+    }
+
+    public function getMime(): String
+    {
+        return $this->getDirectory() . '/' . $this->getName() . '.' . $this->getType();
     }
 }
