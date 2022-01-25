@@ -104,7 +104,7 @@ class FileController extends ApiController
         }
         return $this->response([
             'status' => Response::HTTP_NOT_FOUND,
-            'message' => "No file with that name: " . $name,
+            'message' => "No files",
         ], [Response::HTTP_NOT_FOUND]);
     }
 
