@@ -8,6 +8,11 @@
 /var/
 /vendor/
 /migrations/
+/phpcs.phar
+/phpcbf.phar
+/tools/
+/.php-cs-fixer.cache
+/composer.phar
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

@@ -2,16 +2,15 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ApiController extends AbstractController
 {
-
     protected int $statusCode = Response::HTTP_OK;
 
     public function getStatusCode(): int
@@ -26,7 +25,7 @@ class ApiController extends AbstractController
         return $this;
     }
 
-    public function response($data,array $headers): JsonResponse
+    public function response($data, array $headers): JsonResponse
     {
         return new JsonResponse($data, $this->getStatusCode(), $headers);
     }

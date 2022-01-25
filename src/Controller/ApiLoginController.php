@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\User;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class ApiLoginController extends AbstractController
@@ -15,7 +15,7 @@ class ApiLoginController extends AbstractController
      */
     public function index(): Response
     {
-	return $this->json([
+        return $this->json([
             'token' => $this->getUser() ? $this->getUser()->getPassword() : null
         ]);
     }

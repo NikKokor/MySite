@@ -3,19 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\File;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FileRepository;
+use App\Service\FileUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\FileUploader;
 
 /**
  * Class FileController
@@ -37,13 +37,13 @@ class FileController extends ApiController
     /**
      * @Route("/add", name="add_file", methods={"POST"})
      */
-    public function addFile(Request $request, FileRepository $fileRepository, FileUploader $fileUploader) : JsonResponse
+    public function addFile(Request $request, FileRepository $fileRepository, FileUploader $fileUploader): JsonResponse
     {
         $fileData = $request->files->get('file');
-	$size = 0;
+        $size = 0;
         if ($fileData) {
             try {
-		$size = $fileData->getSize();
+                $size = $fileData->getSize();
                 $sluggedFileData = $fileUploader->upload($fileData);
             } catch (Exception $error) {
                 return $this->response([
@@ -111,7 +111,8 @@ class FileController extends ApiController
     /**
     * @Route("/delete/{name}", name="file_delete", methods={"DELETE"})
     */
-    public function delete(Request $request, FileRepository $fileRepository, $name): JsonResponse {
+    public function delete(Request $request, FileRepository $fileRepository, $name): JsonResponse
+    {
         $file = $fileRepository->findOneBy(['name' => $name]);
         if (!$file) {
             return $this->response([

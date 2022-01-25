@@ -13,7 +13,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface {
+class User implements UserInterface, PasswordAuthenticatedUserInterface
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -32,19 +33,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     private $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var                       string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername() : ?string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -117,4 +120,3 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 }
-

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Todo;
@@ -11,9 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Class UserController
@@ -82,11 +83,11 @@ class UserController extends ApiController
             return $this->response($data, [Response::HTTP_NOT_FOUND]);
         }
 
-        $userData = array(
+        $userData = [
             'id' => $user->getId(),
             'username' => $user->getUsername(),
             'count Todo' => $count,
-        );
+        ];
 
         return $this->response($userData, []);
     }
@@ -157,15 +158,14 @@ class UserController extends ApiController
             if (!empty($request->get('old_password')) && !empty($request->get('new_password'))) {
                 $new_password = $request->get('new_password');
 
-                if ($passwordHasher->isPasswordValid($user, $request->get('old_password'))) {
-                    $user->setPassword($passwordHasher->hashPassword($user, $new_password));
-                } else {
+                if (!($passwordHasher->isPasswordValid($user, $request->get('old_password')))) {
                     $data = [
                         'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
                         'errors' => "Old password incorrect",
                     ];
                     return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
                 }
+                $user->setPassword($passwordHasher->hashPassword($user, $new_password));
             }
             if (!empty($login)) {
                 $user->setUsername($login);
