@@ -51,23 +51,23 @@
 
 <details>
   <summary>Improve It</summary>
-  
+##phpstan
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/phpstan_before.jpg)
 
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/phpstan_after.jpg)
-
+##phpcs
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/phpcs_before.jpg)
 
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/phpcs_after.jpg)
-
+##phpcbf
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/phpcbf.jpg)
-
+##php-cs-fixer
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/php-cs-fixer.jpg)
-  
+##phpmd
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/phpmd_before.jpg)
 
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/phpmd_after.jpg)
-  
+##ecs
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/ecs_before1.jpg)
 
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/ecs_before2.jpg)
