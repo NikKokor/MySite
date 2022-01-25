@@ -33,31 +33,6 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/add", name="user_add", methods={"POST", "GET"})
-     */
-    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserAdd::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
-            $user->setPassword($hashedPassword);
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('user/add.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
-
-    /**
      * @Route("/reg", name="user_reg", methods={"POST"})
      */
     public function regUser(Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
@@ -212,7 +187,7 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/delete", name="user_delete", methods={"DELETE", "GET"})
+     * @Route("/delete", name="user_delete", methods={"DELETE"})
      */
     public function deleteUser(Request $request, UserRepository $userRepository, TodoRepository $todoRepository): JsonResponse
     {
