@@ -37,10 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
      */
     private $password;
 
-    public function __construct()
-    {
-        $this->Todo = new ArrayCollection();
-    }
+    public function __construct() {}
 
     public function getId() : ?int
     {
