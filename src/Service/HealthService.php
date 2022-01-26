@@ -4,15 +4,15 @@ namespace App\Service;
 
 class HealthService
 {
-    private $AppEnv;
+    private $app_env;
 
-    public function __construct($health)
+    public function __construct($app_env)
     {
-        $this->AppEnv = $health;
+        $this->app_env = $app_env;
     }
 
     public function getAppEnv()
     {
-        return $this->AppEnv;
+        return $this->app_env;
     }
 }
