@@ -92,3 +92,10 @@
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/prod.png)
 
 </details>
+
+<details>
+  <summary>ssh</summary>
+  
+![alt text](https://github.com/NikKokor/nik/blob/master/screens/deploy.png)
+
+</details>
