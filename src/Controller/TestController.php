@@ -15,7 +15,7 @@ class TestController extends ApiController
     public function index(): JsonResponse
     {
         return $this->response([
-            'message' => 'new test!'
+            'message' => 'update test!'
         ], []);
     }
 }
