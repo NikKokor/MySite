@@ -103,6 +103,6 @@
 <details>
   <summary>git hooks</summary>
   
-![alt text](https://github.com/NikKokor/nik/blob/master/screens/hooks.png)
+![alt text](https://github.com/NikKokor/nik/blob/master/screens/git_hooks.png)
 
 </details>
