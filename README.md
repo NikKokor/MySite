@@ -99,3 +99,10 @@
 ![alt text](https://github.com/NikKokor/nik/blob/master/screens/deploy.png)
 
 </details>
+
+<details>
+  <summary>git hooks</summary>
+  
+![alt text](https://github.com/NikKokor/nik/blob/master/screens/hooks.png)
+
+</details>
