@@ -101,8 +101,9 @@ class FileController extends ApiController
 
         try
             $filesystem->remove([$file->getMime()]);
-        catch (IOExceptionInterface $exception)
+        catch (IOExceptionInterface $exception) {
             return $this->responsStatus(Response::HTTP_METHOD_NOT_ALLOWED, "Can't delete from directory", [Response::HTTP_METHOD_NOT_ALLOWED]);
+        }
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($file);
