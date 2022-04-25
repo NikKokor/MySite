@@ -44,7 +44,7 @@ class ChatController extends ApiController
             $entityManager->persist($chat);
             $entityManager->flush();
 
-            return $this->responsStatus(Response::HTTP_OK, "Chat create successfully";
+            return $this->responsStatus(Response::HTTP_OK, "Chat create successfully");
         } catch (\Exception $e) {
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
         }
@@ -67,9 +67,9 @@ class ChatController extends ApiController
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Chat not found", [Response::HTTP_NOT_FOUND]);
         }
         if ($chat) {
-            return $this->responseData(['status' => Response::HTTP_OK, 'chat' => $chat->getId()]);
+            return $this->responsData(['status' => Response::HTTP_OK, 'chat' => $chat->getId()]);
         } else {
-            return $this->responseData(['status' => Response::HTTP_OK, 'chat' => $ch->getId()]);
+            return $this->responsData(['status' => Response::HTTP_OK, 'chat' => $ch->getId()]);
         }
     }
 }

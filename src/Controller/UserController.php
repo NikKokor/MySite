@@ -67,7 +67,7 @@ class UserController extends ApiController
             'count Todo' => $count,
         ];
 
-        return $this->responseData($userData, []);
+        return $this->responsData($userData, []);
     }
 
     /**
@@ -86,11 +86,11 @@ class UserController extends ApiController
         }
 
         $userData = [
-        'id' => $user->getId(),
+            'id' => $user->getId(),
             'username' => $user->getUsername(),
         ];
 
-        return $this->responseData($userData, []);
+        return $this->responsData($userData);
     }
 
     /**
@@ -121,7 +121,7 @@ class UserController extends ApiController
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Users not found", [Response::HTTP_NOT_FOUND]);
         }
 
-        return $this->responseData($arrayUsers, []);
+        return $this->responsData($arrayUsers, []);
     }
 
     /**

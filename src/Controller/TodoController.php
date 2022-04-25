@@ -78,7 +78,7 @@ class TodoController extends ApiController
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Todos not found", [Response::HTTP_NOT_FOUND]);
         }
 
-        return $this->responseData($arrayTodo, []);
+        return $this->responsData($arrayTodo, []);
     }
 
     /**
@@ -103,7 +103,7 @@ class TodoController extends ApiController
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Todos not found", [Response::HTTP_NOT_FOUND]);
         }
 
-        return $this->responseData($arrayTodo, []);
+        return $this->responsData($arrayTodo, []);
     }
 
     /**

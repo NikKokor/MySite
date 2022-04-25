@@ -16,6 +16,6 @@ class HealthController extends ApiController
      */
     public function index(HealthService $healthService): JsonResponse
     {
-        return $this->responsStatus(Response::HTTP_OK,$healthService->getAppEnv());
+        return $this->responsStatus(Response::HTTP_OK, $healthService->getAppEnv());
     }
 }
