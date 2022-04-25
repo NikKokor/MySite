@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block head%}
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+    <title>main</title>
+    <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+    <meta name="generator" content="Nicepage 4.9.5, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    
+    
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": ""
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="main">
+    <meta property="og:type" content="website">
+  </head>
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+        <link rel="stylesheet" href="{{ asset('/home/nik/templates/chat/nicepage.css') }}" media="screen">
+        <link rel="stylesheet" href="{{ asset('/home/nik/templates/chat/main.css') }}" media="screen">
+{% endblock %}
+
+{% block body %}
+
+  <body class="u-body u-xl-mode"> 
+    <section class="u-align-center u-clearfix u-section-1" id="sec-e2c2">
+      <div class="u-clearfix u-layout-wrap u-layout-wrap-1">
+        <div class="u-layout">
+          <div class="u-layout-row">
+            <div class="u-container-style u-image u-layout-cell u-left-cell u-size-20 u-image-1">
+              <div class="u-container-layout u-container-layout-1"></div>
+            </div>
+            <div class="u-align-center u-container-style u-grey-10 u-layout-cell u-size-20 u-layout-cell-2">
+              <div class="u-container-layout u-valign-middle u-container-layout-2">
+                <div class="u-container-style u-grey-10 u-group u-group-1">
+                  <div class="u-container-layout u-valign-middle">
+                    <div class="u-expanded-width u-form u-form-1">
+                      <form action="#" method="POST" class="u-clearfix u-form-spacing-10 u-form-vertical u-inner-form" source="custom" name="form" style="padding: 10px;">
+                        <div class="u-form-group u-form-name">
+                          <label for="name-0f28" class="u-label">Username</label>
+                          <input type="text" placeholder="Введите username" id="name-0f28" name="username" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+                        </div>
+                        <div class="u-form-email u-form-group">
+                          <label for="email-0f28" class="u-label">Password</label>
+                          <input type="email" placeholder="Введите password" id="email-0f28" name="password" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
+                        </div>
+                        <div class="u-align-center u-form-group u-form-submit">
+                          <a href="#" class="u-btn u-btn-submit u-button-style u-hover-palette-1-dark-1 u-palette-1-base u-btn-1">войти<br>
+                          </a>
+                          <input type="submit" value="submit" class="u-form-control-hidden">
+                        </div>
+                        <div class="u-form-send-message u-form-send-success"> Спасибо! Ваше сообщение отправлено. </div>
+                        <div class="u-form-send-error u-form-send-message"> Отправка не удалась. Пожалуйста, исправьте ошибки и попробуйте еще раз. </div>
+                        <input type="hidden" value="" name="recaptchaResponse">
+                      </form>
+                    </div>
+                    <h6 class="u-align-center u-text u-text-1">
+                      <a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-base u-btn-2" href="regitr.html" data-page-id="23265944">Зарегестрироваться<br>
+                      </a>
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="u-container-style u-image u-layout-cell u-right-cell u-size-20 u-image-2">
+              <div class="u-container-layout u-container-layout-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    
+    
+    <section class="u-backlink u-clearfix u-grey-80">
+      <a class="u-link" href="https://nicepage.com/website-templates" target="_blank">
+        <span>Website Templates</span>
+      </a>
+      <p class="u-text">
+        <span>created with</span>
+      </p>
+      <a class="u-link" href="" target="_blank">
+        <span>Website Builder Software</span>
+      </a>. 
+    </section>
+  </body>
+{% endblock %}

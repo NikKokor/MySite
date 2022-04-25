@@ -1,32 +1,13 @@
 <?php
 
-
-/**
- * @file
- *
- * Same descr for sniffer
- *
- * Same descr
- *
- * @category PHP
- * @package  PHP_RestApi
- * @author   nikita kokorin <nikita@exemple.com>
- * @license  https://github.com/licence.txt BSD Licence
- * @link     https://github.com/NikKokor/nik
- *
- * @ORM\Table(name="file")
- * @ORM\Entity(repositoryClass=FileRepository::class)
- */
-
-/**
- * Extra comments
- */
-
 namespace App\Entity;
 
 use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ *@ORM\Entity(repositoryClass=FileRepository::class)
+ */
 class File
 {
     /**

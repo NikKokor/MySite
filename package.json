@@ -8,11 +8,23 @@
     "test": "tests"
   },
   "dependencies": {
-    "axios": "^0.23.0"
+    "@symfony/webpack-encore": "^1.8.2",
+    "axios": "^0.23.0",
+    "core-js": "^3.22.2",
+    "jquery": "^3.6.0",
+    "webpack-notifier": "^1.15.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "node-sass": "^7.0.1",
+    "nodemon": "^2.0.15",
+    "sass-loader": "^12.6.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
   },
   "repository": {
     "type": "git",

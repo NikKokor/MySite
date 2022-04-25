@@ -93,6 +93,37 @@ class UserController extends ApiController
     }
 
     /**
+     * @Route("/get_me", name="user_get_me", methods={"GET"})
+     */
+    public function getUserMe(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse
+    {
+        $token = $request->headers->get('Token');
+        $user = $userRepository->findOneBy(["password" => $token]);
+        if ($user == null) {
+            $data = [
+                'status' => Response::HTTP_UNAUTHORIZED,
+                'errors' => "Token invalid",
+            ];
+            return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+        }
+
+        if (!$user) {
+            $data = [
+                'status' => Response::HTTP_NOT_FOUND,
+                'errors' => "User not found",
+            ];
+            return $this->response($data, [Response::HTTP_NOT_FOUND]);
+        }
+
+        $userData = [
+        'id' => $user->getId(),
+            'username' => $user->getUsername(),
+        ];
+
+        return $this->response($userData, []);
+    }
+
+    /**
      * @Route("/get_all", name="user_get_all", methods={"GET"})
      */
     public function getUsers(UserRepository $userRepository, TodoRepository $todoRepository): JsonResponse
