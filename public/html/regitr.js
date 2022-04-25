@@ -1,3 +1,4 @@
+//регистрация
 document.getElementById("button").onclick = function () {
     let user = {
         username: document.getElementById("username").value,

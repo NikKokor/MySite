@@ -1,41 +1,6 @@
-function getCookie(name) {
-    let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-}
+import "cookies.js";
 
-function setCookie(name, value, options = {}) {
-
-    options = {
-        path: '/',
-        // при необходимости добавьте другие значения по умолчанию
-        ...options
-    };
-
-    if (options.expires instanceof Date) {
-        options.expires = options.expires.toUTCString();
-    }
-
-    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-
-    for (let optionKey in options) {
-        updatedCookie += "; " + optionKey;
-        let optionValue = options[optionKey];
-        if (optionValue !== true) {
-            updatedCookie += "=" + optionValue;
-        }
-    }
-
-    document.cookie = updatedCookie;
-}
-
-function deleteCookie(name) {
-    setCookie(name, "", {
-        'max-age': -1
-    })
-}
-
+//переход в чат
 function fun(pers) {
     return function () {
         setCookie('id_me', me['id']);
@@ -99,8 +64,9 @@ document.cookie = "id_chat=" + "";
 var users = [];
 var me = [];
 
-let url = 'http://195.140.146.82/user/get_me';
 
+let url = 'http://195.140.146.82/user/get_me';
+//получение всех пользователей
 $.ajax({
     type: "GET",
     url: url,
@@ -141,7 +107,6 @@ $.ajax({
                 }
 
                 for (var i = 0; i < pers.length; i++) {
-                    console.log(pers[i]);
                     pers[i].onclick = fun(users[i]);
                 }
             }
@@ -149,6 +114,7 @@ $.ajax({
     }
 });
 
+//изменение username
 document.getElementById("put_username").onclick = function () {
     let user = {
         username: document.getElementById("username").value
@@ -172,16 +138,14 @@ document.getElementById("put_username").onclick = function () {
     });
 };
 
+//изменение password
 document.getElementById("put_password").onclick = function () {
     let user = {
         old_password: document.getElementById("old_password").value,
         new_password: document.getElementById("new_password").value
     };
 
-    console.log(user);
-
     let url = 'http://195.140.146.82/user/put';
-
 
     $.ajax({
         type: "PUT",
@@ -196,7 +160,7 @@ document.getElementById("put_password").onclick = function () {
     });
 };
 
-
+//выход из аккаунта
 document.getElementById("exit").onclick = function () {
     deleteCookie('token');
     window.location.href = 'main.html';
