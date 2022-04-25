@@ -78,7 +78,7 @@ class TodoController extends ApiController
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Todos not found", [Response::HTTP_NOT_FOUND]);
         }
 
-        return $this->responsData($arrayTodo, []);
+        return $this->responsData($arrayTodo);
     }
 
     /**
@@ -103,7 +103,7 @@ class TodoController extends ApiController
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Todos not found", [Response::HTTP_NOT_FOUND]);
         }
 
-        return $this->responsData($arrayTodo, []);
+        return $this->responsData($arrayTodo);
     }
 
     /**
@@ -133,7 +133,7 @@ class TodoController extends ApiController
             }
 
             $entityManager->flush();
-            return $this->responsStatus(Response::HTTP_OK, "Todo updated successfully", []);
+            return $this->responsStatus(Response::HTTP_OK, "Todo updated successfully");
         } catch (\Exception $e) {
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
         }

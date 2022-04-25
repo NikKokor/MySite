@@ -122,6 +122,6 @@ class MessagesController extends ApiController
             'status' => Response::HTTP_OK,
             'errors' => "Success",
         ];
-        return 	$this->responsData([$data, $messages], []);
+        return 	$this->responsData([$data, $messages]);
     }
 }

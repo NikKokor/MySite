@@ -30,15 +30,14 @@ class UserController extends ApiController
     {
         try {
             $request = $this->transformJsonBody($request);
-            $entityManager = $this->getDoctrine()->getManager();
             $user = new User();
             $user->setUsername($request->get('username'));
             $user->setPassword($passwordHasher->hashPassword($user, $request->get('password')));
-
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->responsStatus(Response::HTTP_OK, "User registry successfully", []);
+            return $this->responsStatus(Response::HTTP_OK, "User registry successfully");
         } catch (\Exception $e) {
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
         }
@@ -67,7 +66,7 @@ class UserController extends ApiController
             'count Todo' => $count,
         ];
 
-        return $this->responsData($userData, []);
+        return $this->responsData($userData);
     }
 
     /**
@@ -79,10 +78,6 @@ class UserController extends ApiController
         $user = $userRepository->findOneBy(["password" => $token]);
         if ($user == null) {
             return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
-        }
-
-        if (!$user) {
-            return $this->responsStatus(Response::HTTP_NOT_FOUND, "User not found", [Response::HTTP_NOT_FOUND]);
         }
 
         $userData = [
@@ -121,7 +116,7 @@ class UserController extends ApiController
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Users not found", [Response::HTTP_NOT_FOUND]);
         }
 
-        return $this->responsData($arrayUsers, []);
+        return $this->responsData($arrayUsers);
     }
 
     /**
@@ -135,12 +130,8 @@ class UserController extends ApiController
             if ($user == null) {
                 return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
             }
+
             $entityManager = $this->getDoctrine()->getManager();
-
-            if (!$user) {
-                return $this->responsStatus(Response::HTTP_NOT_FOUND, "User not found", [Response::HTTP_NOT_FOUND]);
-            }
-
             $request = $this->transformJsonBody($request);
             $login = $request->get('username');
 
@@ -174,12 +165,8 @@ class UserController extends ApiController
             return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
         }
         $todos = $todoRepository->findBy(["user_id" => $user->getId()]);
+
         $entityManager = $this->getDoctrine()->getManager();
-
-        if (!$user) {
-            return $this->responsStatus(Response::HTTP_NOT_FOUND, "User not found", [Response::HTTP_NOT_FOUND]);
-        }
-
         foreach ($todos as $todo) {
             $entityManager->remove($todo);
         }
