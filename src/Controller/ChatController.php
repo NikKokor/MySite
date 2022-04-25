@@ -44,8 +44,9 @@ class ChatController extends ApiController
             $entityManager->flush();
 
             return $this->responsStatus(Response::HTTP_OK, "Chat create successfully");
-        } catch (\Exception $e)
+        } catch (\Exception $e) {
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
+        }
     }
 
     /**

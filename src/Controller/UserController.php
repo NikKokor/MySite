@@ -38,8 +38,9 @@ class UserController extends ApiController
             $entityManager->flush();
 
             return $this->responsStatus(Response::HTTP_OK, "User registry successfully");
-        } catch (\Exception $e)
+        } catch (\Exception $e) {
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
+        }
     }
 
     /**
@@ -145,8 +146,9 @@ class UserController extends ApiController
             $entityManager->flush();
 
             return $this->responsStatus(Response::HTTP_OK, "User updated successfully");
-        } catch (\Exception $e)
+        } catch (\Exception $e) {
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
+        }
     }
 
     /**

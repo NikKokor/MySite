@@ -46,8 +46,9 @@ class TodoController extends ApiController
             $entityManager->flush();
 
             return $this->responsStatus(Response::HTTP_OK, "Todo added successfully");
-        } catch (\Exception $e)
+        } catch (\Exception $e) {
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
+        }
     }
 
     /**
@@ -132,8 +133,9 @@ class TodoController extends ApiController
             $entityManager->flush();
 
             return $this->responsStatus(Response::HTTP_OK, "Todo updated successfully");
-        } catch (\Exception $e)
+        } catch (\Exception $e) {
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
+        }
     }
 
     /**

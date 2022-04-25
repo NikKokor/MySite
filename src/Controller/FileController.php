@@ -36,8 +36,9 @@ class FileController extends ApiController
             try {
                 $size = $fileData->getSize();
                 $sluggedFileData = $fileUploader->upload($fileData);
-            } catch (Exception $error)
+            } catch (Exception $error) {
                 return $this->responsStatus(Response::HTTP_CONFLICT, $error->getMessage(), [Response::HTTP_CONFLICT]);
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $file = new File();
