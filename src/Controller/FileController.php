@@ -99,8 +99,9 @@ class FileController extends ApiController
 
         $filesystem = new Filesystem();
 
-        try
+        try {
             $filesystem->remove([$file->getMime()]);
+        }
         catch (IOExceptionInterface $exception) {
             return $this->responsStatus(Response::HTTP_METHOD_NOT_ALLOWED, "Can't delete from directory", [Response::HTTP_METHOD_NOT_ALLOWED]);
         }
