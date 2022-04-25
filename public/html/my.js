@@ -1,5 +1,3 @@
-import "cookies.js";
-
 //переход в чат
 function fun(pers) {
     return function () {

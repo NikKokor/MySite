@@ -1,5 +1,3 @@
-import "cookies.js";
-
 let url;
 
 //отправка сообщения
