@@ -32,9 +32,10 @@ class TodoController extends ApiController
         try {
             $token = $request->headers->get('Token');
             $user = $userRepository->findOneBy(["password" => $token]);
-            if ($user == null) {
+
+            if ($user == null)
                 return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
-            }
+
             $request = $this->transformJsonBody($request);
             $entityManager = $this->getDoctrine()->getManager();
             $todo = new Todo();
@@ -45,9 +46,8 @@ class TodoController extends ApiController
             $entityManager->flush();
 
             return $this->responsStatus(Response::HTTP_OK, "Todo added successfully");
-        } catch (\Exception $e) {
+        } catch (\Exception $e)
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
-        }
     }
 
     /**
@@ -57,14 +57,15 @@ class TodoController extends ApiController
     {
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
-        if ($user == null) {
-            return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
-        }
-        $todos = $todoRepository->findBy(["user_id" => $user->getId()]);
 
+        if ($user == null)
+            return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
+
+        $todos = $todoRepository->findBy(["user_id" => $user->getId()]);
         $arrayTodo = [
             'username' => $user->getUsername()
         ];
+
         foreach ($todos as $todo) {
             $obj = [
                 'id' => $todo->getId(),
@@ -74,9 +75,8 @@ class TodoController extends ApiController
             $arrayTodo[] = $obj;
         }
 
-        if (!$arrayTodo) {
+        if (!$arrayTodo)
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Todos not found", [Response::HTTP_NOT_FOUND]);
-        }
 
         return $this->responsData($arrayTodo);
     }
@@ -87,8 +87,8 @@ class TodoController extends ApiController
     public function getAllTodo(TodoRepository $todoRepository): JsonResponse
     {
         $todos = $todoRepository->findAll();
-
         $arrayTodo = [];
+
         foreach ($todos as $todo) {
             $obj = [
                 'id' => $todo->getId(),
@@ -99,9 +99,8 @@ class TodoController extends ApiController
             $arrayTodo[] = $obj;
         }
 
-        if (!$arrayTodo) {
+        if (!$arrayTodo)
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Todos not found", [Response::HTTP_NOT_FOUND]);
-        }
 
         return $this->responsData($arrayTodo);
     }
@@ -114,29 +113,27 @@ class TodoController extends ApiController
         try {
             $token = $request->headers->get('Token');
             $user = $userRepository->findOneBy(["password" => $token]);
-            if ($user == null) {
+
+            if ($user == null)
                 return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
-            }
+
             $todo = $todoRepository->find($id);
             $entityManager = $this->getDoctrine()->getManager();
-
             $request = $this->transformJsonBody($request);
-
             $title = $request->get('title');
             $description = $request->get('description');
 
-            if (!empty($title)) {
+            if (!empty($title))
                 $todo->setTitle($title);
-            }
-            if (!empty($description)) {
+
+            if (!empty($description))
                 $todo->setDescription($description);
-            }
 
             $entityManager->flush();
+
             return $this->responsStatus(Response::HTTP_OK, "Todo updated successfully");
-        } catch (\Exception $e) {
+        } catch (\Exception $e)
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
-        }
     }
 
     /**
@@ -146,18 +143,19 @@ class TodoController extends ApiController
     {
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
-        if ($user == null) {
+
+        if ($user == null)
             return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
-        }
+
         $todo = $todoRepository->find($id);
         $entityManager = $this->getDoctrine()->getManager();
 
-        if (!$todo) {
+        if (!$todo)
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Todo not found", [Response::HTTP_NOT_FOUND]);
-        }
 
         $entityManager->remove(todo);
         $entityManager->flush();
+
         return $this->responsStatus(Response::HTTP_OK, "Todo deleted successfully");
     }
 }

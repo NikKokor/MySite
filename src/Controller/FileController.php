@@ -31,14 +31,13 @@ class FileController extends ApiController
     {
         $fileData = $request->files->get('file');
         $size = 0;
+
         if ($fileData) {
             try {
                 $size = $fileData->getSize();
                 $sluggedFileData = $fileUploader->upload($fileData);
-            } catch (Exception $error) {
+            } catch (Exception $error)
                 return $this->responsStatus(Response::HTTP_CONFLICT, $error->getMessage(), [Response::HTTP_CONFLICT]);
-            }
-
 
             $entityManager = $this->getDoctrine()->getManager();
             $file = new File();
@@ -52,6 +51,7 @@ class FileController extends ApiController
 
             return $this->responsStatus(Response::HTTP_OK, "File was added successfully");
         }
+
         return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Incorrect data", [Response::HTTP_UNPROCESSABLE_ENTITY]);
     }
 
@@ -61,9 +61,10 @@ class FileController extends ApiController
     public function getByName(FileRepository $fileRepository, $name): BinaryFileResponse
     {
         $file = $fileRepository->findOneBy(["name" => $name]);
-        if ($file) {
+
+        if ($file)
             return $this->binaryResponse($file->getMime());
-        }
+
         return $this->responsStatus(Response::HTTP_NOT_FOUND, "No File with that name: " . $name, [Response::HTTP_NOT_FOUND]);
     }
 
@@ -74,12 +75,14 @@ class FileController extends ApiController
     {
         $files = $fileRepository->findAll();
         $data = [];
+
         if (count($files) > 0) {
-            for ($i = 0; $i < count($files); $i++) {
+            for ($i = 0; $i < count($files); $i++)
                 $data[$i] = $files[$i]->getData();
-            }
+
             return $this->response($data);
         }
+
         return $this->responsStatus(Response::HTTP_NOT_FOUND, "No files", [Response::HTTP_NOT_FOUND]);
     }
 
@@ -89,15 +92,16 @@ class FileController extends ApiController
     public function delete(Request $request, FileRepository $fileRepository, $name): JsonResponse
     {
         $file = $fileRepository->findOneBy(['name' => $name]);
-        if (!$file) {
+
+        if (!$file)
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "No file with that name: " . $name, [Response::HTTP_NOT_FOUND]);
-        }
+
         $filesystem = new Filesystem();
-        try {
+
+        try
             $filesystem->remove([$file->getMime()]);
-        } catch (IOExceptionInterface $exception) {
+        catch (IOExceptionInterface $exception)
             return $this->responsStatus(Response::HTTP_METHOD_NOT_ALLOWED, "Can't delete from directory", [Response::HTTP_METHOD_NOT_ALLOWED]);
-        }
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($file);

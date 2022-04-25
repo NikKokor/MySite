@@ -32,9 +32,8 @@ class ChatController extends ApiController
             $token = $request->headers->get('Token');
             $user = $userRepository->findOneBy(["password" => $token]);
 
-            if ($user == null) {
+            if ($user == null)
                 return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
-            }
 
             $request = $this->transformJsonBody($request);
             $entityManager = $this->getDoctrine()->getManager();
@@ -45,9 +44,8 @@ class ChatController extends ApiController
             $entityManager->flush();
 
             return $this->responsStatus(Response::HTTP_OK, "Chat create successfully");
-        } catch (\Exception $e) {
+        } catch (\Exception $e)
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
-        }
     }
 
     /**
@@ -57,19 +55,20 @@ class ChatController extends ApiController
     {
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
-        if ($user == null) {
+
+        if ($user == null)
             return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
-        }
+
         $request = $this->transformJsonBody($request);
         $chat = $chatRepository->findOneBy(["user_1" => $user->getId(), "user_2" => $request->get('user_id')]);
         $ch = $chatRepository->findOneBy(["user_2" => $user->getId(), "user_1" => $request->get('user_id')]);
-        if (!$chat && !$ch) {
+
+        if (!$chat && !$ch)
             return $this->responsStatus(Response::HTTP_NOT_FOUND, "Chat not found", [Response::HTTP_NOT_FOUND]);
-        }
-        if ($chat) {
+
+        if ($chat)
             return $this->responsData(['status' => Response::HTTP_OK, 'chat' => $chat->getId()]);
-        } else {
+        else
             return $this->responsData(['status' => Response::HTTP_OK, 'chat' => $ch->getId()]);
-        }
     }
 }

@@ -33,9 +33,10 @@ class MessagesController extends ApiController
         try {
             $token = $request->headers->get('Token');
             $user = $userRepository->findOneBy(["password" => $token]);
-            if ($user == null) {
+
+            if ($user == null)
                 return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
-            }
+
             $request = $this->transformJsonBody($request);
             $entityManager = $this->getDoctrine()->getManager();
             $messages = new Messages();
@@ -46,9 +47,8 @@ class MessagesController extends ApiController
             $entityManager->flush();
 
             return $this->responsStatus(Response::HTTP_OK, "Message added successfully");
-        } catch (\Exception $e) {
+        } catch (\Exception $e)
             return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
-        }
     }
 
     /**
@@ -58,22 +58,22 @@ class MessagesController extends ApiController
     {
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
-        if ($user == null) {
+
+        if ($user == null)
             return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
-        }
+
         $request = $this->transformJsonBody($request);
         $chat = $chatRepository->find($request->get('chat_id'));
         $mess1 = $messagesRepository->findBy(["user" => $user->getId(), "chat" => $chat->getId()]);
         $mess2 = $messagesRepository->findBy(["user" => $chat->getUser2(), "chat" => $chat->getId()]);
 
-        if ($mess1 == $mess2) {
+        if ($mess1 == $mess2)
             $mess2 = $messagesRepository->findBy(["user" => $chat->getUser1(), "chat" => $chat->getId()]);
-        };
 
         $message1 = [];
         $message2 = [];
-
         $i = 0;
+
         foreach ($mess1 as $mess) {
             $message1[$i]['id'] = $mess->getId();
             $message1[$i]['user'] = $mess->getUser();
@@ -83,6 +83,7 @@ class MessagesController extends ApiController
         };
 
         $i = 0;
+
         foreach ($mess2 as $mess) {
             $message2[$i]['id'] = $mess->getId();
             $message2[$i]['user'] = $mess->getUser();
@@ -94,6 +95,7 @@ class MessagesController extends ApiController
         $i = 0;
         $j = 0;
         $messages = [];
+
         while ($i < count($message1) || $j < count($message2)):
            if ($i == count($message1)) {
                $messages[] = $message2[$j];
@@ -115,6 +117,7 @@ class MessagesController extends ApiController
                 'status' => Response::HTTP_NOT_FOUND,
                 'errors' => "Messages not found",
             ];
+
             return $this->responsData([$data, $messages], [Response::HTTP_NOT_FOUND]);
         }
 
@@ -122,6 +125,7 @@ class MessagesController extends ApiController
             'status' => Response::HTTP_OK,
             'errors' => "Success",
         ];
+
         return 	$this->responsData([$data, $messages]);
     }
 }
