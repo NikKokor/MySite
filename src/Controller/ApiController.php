@@ -51,6 +51,21 @@ class ApiController extends AbstractController
         return new JsonResponse($data, $this->getStatusCode(), $headers);
     }
 
+    public function responsStatus($status, $text, $headers = []): JsonResponse
+    {
+        $data = [
+            'status' => $status,
+            'errors' => $text,
+        ];
+
+        return new JsonResponse($data, $this->getStatusCode(), $headers);
+    }
+
+    public function responsData($data, $headers = []): JsonResponse
+    {
+        return new JsonResponse($data, $this->getStatusCode(), $headers);
+    }
+
 
     public function respondUnauthorized($message = 'Not authorized!'): JsonResponse
     {

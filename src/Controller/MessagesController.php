@@ -26,16 +26,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class MessagesController extends ApiController
 {
     /**
-     * @Route("/", name="app_messages")
-     */
-    public function index(): Response
-    {
-        return $this->render('messages/index.html.twig', [
-            'controller_name' => 'MessagesController',
-        ]);
-    }
-
-    /**
      * @Route("/add", name="messages_add", methods={"POST"})
      */
     public function addMessages(Request $request, UserRepository $userRepository): JsonResponse
@@ -44,11 +34,7 @@ class MessagesController extends ApiController
             $token = $request->headers->get('Token');
             $user = $userRepository->findOneBy(["password" => $token]);
             if ($user == null) {
-                $data = [
-                    'status' => Response::HTTP_UNAUTHORIZED,
-                    'errors' => "Token invalid",
-                ];
-                return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+                return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
             }
             $request = $this->transformJsonBody($request);
             $entityManager = $this->getDoctrine()->getManager();
@@ -59,17 +45,9 @@ class MessagesController extends ApiController
             $entityManager->persist($messages);
             $entityManager->flush();
 
-            $data = [
-                'status' => Response::HTTP_OK,
-                'success' => "Message added successfully",
-            ];
-            return $this->response($data, []);
+            return $this->responsStatus(Response::HTTP_OK, "Message added successfully");
         } catch (\Exception $e) {
-            $data = [
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => "Data no valid",
-            ];
-            return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
+            return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
         }
     }
 
@@ -81,11 +59,7 @@ class MessagesController extends ApiController
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
         if ($user == null) {
-            $data = [
-                'status' => Response::HTTP_UNAUTHORIZED,
-                'errors' => "Token invalid",
-            ];
-            return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+            return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
         }
         $request = $this->transformJsonBody($request);
         $chat = $chatRepository->find($request->get('chat_id'));
@@ -141,13 +115,13 @@ class MessagesController extends ApiController
                 'status' => Response::HTTP_NOT_FOUND,
                 'errors' => "Messages not found",
             ];
-            return $this->response([$data, $messages], [Response::HTTP_NOT_FOUND]);
+            return $this->responsData([$data, $messages], [Response::HTTP_NOT_FOUND]);
         }
 
         $data = [
             'status' => Response::HTTP_OK,
             'errors' => "Success",
         ];
-        return 	$this->response([$data, $messages], []);
+        return 	$this->responsData([$data, $messages], []);
     }
 }

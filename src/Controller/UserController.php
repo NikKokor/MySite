@@ -24,16 +24,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserController extends ApiController
 {
     /**
-     * @Route("/", name="user_index", methods={"GET"})
-     */
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
-
-    /**
      * @Route("/reg", name="user_reg", methods={"POST"})
      */
     public function regUser(Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
@@ -48,17 +38,9 @@ class UserController extends ApiController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $data = [
-                'status' => Response::HTTP_OK,
-                'success' => "User registry successfully",
-            ];
-            return $this->response($data, []);
+            return $this->responsStatus(Response::HTTP_OK, "User registry successfully", []);
         } catch (\Exception $e) {
-            $data = [
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => "Data no valid",
-            ];
-            return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
+            return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
         }
     }
 
@@ -76,11 +58,7 @@ class UserController extends ApiController
         }
 
         if (!$user) {
-            $data = [
-                'status' => Response::HTTP_NOT_FOUND,
-                'errors' => "User not found",
-            ];
-            return $this->response($data, [Response::HTTP_NOT_FOUND]);
+            return $this->responsStatus(Response::HTTP_NOT_FOUND, "User not found", [Response::HTTP_NOT_FOUND]);
         }
 
         $userData = [
@@ -89,7 +67,7 @@ class UserController extends ApiController
             'count Todo' => $count,
         ];
 
-        return $this->response($userData, []);
+        return $this->responseData($userData, []);
     }
 
     /**
@@ -100,19 +78,11 @@ class UserController extends ApiController
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
         if ($user == null) {
-            $data = [
-                'status' => Response::HTTP_UNAUTHORIZED,
-                'errors' => "Token invalid",
-            ];
-            return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+            return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
         }
 
         if (!$user) {
-            $data = [
-                'status' => Response::HTTP_NOT_FOUND,
-                'errors' => "User not found",
-            ];
-            return $this->response($data, [Response::HTTP_NOT_FOUND]);
+            return $this->responsStatus(Response::HTTP_NOT_FOUND, "User not found", [Response::HTTP_NOT_FOUND]);
         }
 
         $userData = [
@@ -120,7 +90,7 @@ class UserController extends ApiController
             'username' => $user->getUsername(),
         ];
 
-        return $this->response($userData, []);
+        return $this->responseData($userData, []);
     }
 
     /**
@@ -148,14 +118,10 @@ class UserController extends ApiController
         }
 
         if (!$arrayUsers) {
-            $data = [
-                'status' => Response::HTTP_NOT_FOUND,
-                'errors' => "Users not found",
-            ];
-            return $this->response($data, [Response::HTTP_NOT_FOUND]);
+            return $this->responsStatus(Response::HTTP_NOT_FOUND, "Users not found", [Response::HTTP_NOT_FOUND]);
         }
 
-        return $this->response($arrayUsers, []);
+        return $this->responseData($arrayUsers, []);
     }
 
     /**
@@ -167,20 +133,12 @@ class UserController extends ApiController
             $token = $request->headers->get('Token');
             $user = $userRepository->findOneBy(["password" => $token]);
             if ($user == null) {
-                $data = [
-                    'status' => Response::HTTP_UNAUTHORIZED,
-                    'errors' => "Token invalid",
-                ];
-                return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+                return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
             }
             $entityManager = $this->getDoctrine()->getManager();
 
             if (!$user) {
-                $data = [
-                    'status' => Response::HTTP_NOT_FOUND,
-                    'errors' => "User not found",
-                ];
-                return $this->response($data, [Response::HTTP_NOT_FOUND]);
+                return $this->responsStatus(Response::HTTP_NOT_FOUND, "User not found", [Response::HTTP_NOT_FOUND]);
             }
 
             $request = $this->transformJsonBody($request);
@@ -190,11 +148,7 @@ class UserController extends ApiController
                 $new_password = $request->get('new_password');
 
                 if (!($passwordHasher->isPasswordValid($user, $request->get('old_password')))) {
-                    $data = [
-                        'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                        'errors' => "Old password incorrect",
-                    ];
-                    return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
+                    return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Old password incorrect", [Response::HTTP_UNPROCESSABLE_ENTITY]);
                 }
                 $user->setPassword($passwordHasher->hashPassword($user, $new_password));
             }
@@ -203,17 +157,9 @@ class UserController extends ApiController
             }
 
             $entityManager->flush();
-            $data = [
-                'status' => Response::HTTP_OK,
-                'errors' => "User updated successfully",
-            ];
-            return $this->response($data, []);
+            return $this->responsStatus(Response::HTTP_OK, "User updated successfully");
         } catch (\Exception $e) {
-            $data = [
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => "Data no valid",
-            ];
-            return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
+            return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
         }
     }
 
@@ -225,21 +171,13 @@ class UserController extends ApiController
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
         if ($user == null) {
-            $data = [
-                'status' => Response::HTTP_UNAUTHORIZED,
-                'errors' => "Token invalid",
-            ];
-            return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+            return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
         }
         $todos = $todoRepository->findBy(["user_id" => $user->getId()]);
         $entityManager = $this->getDoctrine()->getManager();
 
         if (!$user) {
-            $data = [
-                'status' => Response::HTTP_NOT_FOUND,
-                'errors' => "User not found",
-            ];
-            return $this->response($data, [Response::HTTP_NOT_FOUND]);
+            return $this->responsStatus(Response::HTTP_NOT_FOUND, "User not found", [Response::HTTP_NOT_FOUND]);
         }
 
         foreach ($todos as $todo) {
@@ -248,12 +186,7 @@ class UserController extends ApiController
 
         $entityManager->remove($user);
         $entityManager->flush();
-        $data = [
-            'status' => Response::HTTP_OK,
-            'errors' => "User deleted successfully",
-        ];
 
-        //return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
-        return $this->response($data, []);
+        return $this->responsStatus(Response::HTTP_OK, "User deleted successfully");
     }
 }

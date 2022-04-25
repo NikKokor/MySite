@@ -25,16 +25,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class FileController extends ApiController
 {
     /**
-     * @Route("/file", name="file")
-     */
-    public function index(): Response
-    {
-        return $this->render('file/index.html.twig', [
-            'controller_name' => 'FileController',
-        ]);
-    }
-
-    /**
      * @Route("/add", name="add_file", methods={"POST"})
      */
     public function addFile(Request $request, FileRepository $fileRepository, FileUploader $fileUploader): JsonResponse
@@ -46,10 +36,7 @@ class FileController extends ApiController
                 $size = $fileData->getSize();
                 $sluggedFileData = $fileUploader->upload($fileData);
             } catch (Exception $error) {
-                return $this->response([
-                    'status' => Response::HTTP_CONFLICT,
-                    'errors' => $error->getMessage(),
-                ], [Response::HTTP_CONFLICT]);
+                return $this->responsStatus(Response::HTTP_CONFLICT, $error->getMessage(), [Response::HTTP_CONFLICT]);
             }
 
 
@@ -63,15 +50,9 @@ class FileController extends ApiController
             $entityManager->persist($file);
             $entityManager->flush();
 
-            return $this->response([
-                'status' => Response::HTTP_OK,
-                'message' => "File was added successfully",
-            ], []);
+            return $this->responsStatus(Response::HTTP_OK, "File was added successfully");
         }
-        return $this->response([
-            'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-            'errors' => "Incorrect data",
-        ], [Response::HTTP_UNPROCESSABLE_ENTITY]);
+        return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Incorrect data", [Response::HTTP_UNPROCESSABLE_ENTITY]);
     }
 
     /**
@@ -83,10 +64,7 @@ class FileController extends ApiController
         if ($file) {
             return $this->binaryResponse($file->getMime());
         }
-        return $this->response([
-            'status' => Response::HTTP_NOT_FOUND,
-            'message' => "No File with that name: " . $name,
-        ], [Response::HTTP_NOT_FOUND]);
+        return $this->responsStatus(Response::HTTP_NOT_FOUND, "No File with that name: " . $name, [Response::HTTP_NOT_FOUND]);
     }
 
     /**
@@ -100,12 +78,9 @@ class FileController extends ApiController
             for ($i = 0; $i < count($files); $i++) {
                 $data[$i] = $files[$i]->getData();
             }
-            return $this->response($data, []);
+            return $this->response($data);
         }
-        return $this->response([
-            'status' => Response::HTTP_NOT_FOUND,
-            'message' => "No files",
-        ], [Response::HTTP_NOT_FOUND]);
+        return $this->responsStatus(Response::HTTP_NOT_FOUND, "No files", [Response::HTTP_NOT_FOUND]);
     }
 
     /**
@@ -115,29 +90,20 @@ class FileController extends ApiController
     {
         $file = $fileRepository->findOneBy(['name' => $name]);
         if (!$file) {
-            return $this->response([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => "No file with that name: " . $name,
-            ], [Response::HTTP_NOT_FOUND]);
+            return $this->responsStatus(Response::HTTP_NOT_FOUND, "No file with that name: " . $name, [Response::HTTP_NOT_FOUND]);
         }
         $filesystem = new Filesystem();
         try {
             $filesystem->remove([$file->getMime()]);
         } catch (IOExceptionInterface $exception) {
-            return $this->response([
-                'status' => Response::HTTP_METHOD_NOT_ALLOWED,
-                'message' => "Can't delete from directory",
-            ], [Response::HTTP_METHOD_NOT_ALLOWED]);
+            return $this->responsStatus(Response::HTTP_METHOD_NOT_ALLOWED, "Can't delete from directory", [Response::HTTP_METHOD_NOT_ALLOWED]);
         }
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($file);
         $entityManager->flush();
 
-        return $this->response([
-            'status' => Response::HTTP_OK,
-            'message' => "File was deleted successfully",
-        ], []);
+        return $this->responsStatus(Response::HTTP_OK, "File was deleted successfully");
     }
 
     public function binaryResponse($mime): BinaryFileResponse

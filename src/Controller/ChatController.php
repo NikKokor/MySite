@@ -24,16 +24,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ChatController extends ApiController
 {
     /**
-     * @Route("/", name="app_chat")
-     */
-    public function index(): Response
-    {
-        return $this->render('chat/main.html.twig', [
-            'controller_name' => 'ChatController',
-        ]);
-    }
-
-    /**
      * @Route("/add", name="chat_add", methods={"POST"})
      */
     public function addChat(Request $request, UserRepository $userRepository): JsonResponse
@@ -41,13 +31,11 @@ class ChatController extends ApiController
         try {
             $token = $request->headers->get('Token');
             $user = $userRepository->findOneBy(["password" => $token]);
+
             if ($user == null) {
-                $data = [
-                    'status' => Response::HTTP_UNAUTHORIZED,
-                    'errors' => "Token invalid",
-                ];
-                return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+                return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
             }
+
             $request = $this->transformJsonBody($request);
             $entityManager = $this->getDoctrine()->getManager();
             $chat = new chat();
@@ -56,17 +44,9 @@ class ChatController extends ApiController
             $entityManager->persist($chat);
             $entityManager->flush();
 
-            $data = [
-                'status' => Response::HTTP_OK,
-                'success' => "Chat create successfully",
-            ];
-            return $this->response($data, []);
+            return $this->responsStatus(Response::HTTP_OK, "Chat create successfully";
         } catch (\Exception $e) {
-            $data = [
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => "Data no valid",
-            ];
-            return $this->response($data, [Response::HTTP_UNPROCESSABLE_ENTITY]);
+            return $this->responsStatus(Response::HTTP_UNPROCESSABLE_ENTITY, "Data no valid", [Response::HTTP_UNPROCESSABLE_ENTITY]);
         }
     }
 
@@ -78,26 +58,18 @@ class ChatController extends ApiController
         $token = $request->headers->get('Token');
         $user = $userRepository->findOneBy(["password" => $token]);
         if ($user == null) {
-            $data = [
-                'status' => Response::HTTP_UNAUTHORIZED,
-                'errors' => "Token invalid",
-            ];
-            return $this->response($data, [Response::HTTP_UNAUTHORIZED]);
+            return $this->responsStatus(Response::HTTP_UNAUTHORIZED, "Token invalid", [Response::HTTP_UNAUTHORIZED]);
         }
         $request = $this->transformJsonBody($request);
         $chat = $chatRepository->findOneBy(["user_1" => $user->getId(), "user_2" => $request->get('user_id')]);
         $ch = $chatRepository->findOneBy(["user_2" => $user->getId(), "user_1" => $request->get('user_id')]);
         if (!$chat && !$ch) {
-            $data = [
-                'status' => Response::HTTP_NOT_FOUND,
-                'errors' => "Chat not found",
-            ];
-            return $this->response($data, [Response::HTTP_NOT_FOUND]);
+            return $this->responsStatus(Response::HTTP_NOT_FOUND, "Chat not found", [Response::HTTP_NOT_FOUND]);
         }
         if ($chat) {
-            return $this->response(['status' => Response::HTTP_OK, 'chat' => $chat->getId()], []);
+            return $this->responseData(['status' => Response::HTTP_OK, 'chat' => $chat->getId()]);
         } else {
-            return $this->response(['status' => Response::HTTP_OK, 'chat' => $ch->getId()], []);
+            return $this->responseData(['status' => Response::HTTP_OK, 'chat' => $ch->getId()]);
         }
     }
 }
